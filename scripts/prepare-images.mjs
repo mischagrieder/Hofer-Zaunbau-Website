@@ -19,7 +19,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
 const outDir = join(root, 'src/assets/images');
 
-const RATIOS = { '16:9': [1920, 1080], '4:3': [1600, 1200] };
+const RATIOS = { '21:9': [2400, 1029], '16:9': [1920, 1080], '4:3': [1600, 1200] };
 
 /** Ruhiger Verlauf in den Markenfarben, damit Platzhalter nicht billig wirken. */
 const placeholder = (width, height, label) => {

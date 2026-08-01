@@ -3,14 +3,15 @@
  * Wortmarke mit vorangestelltem Zaunzeichen.
  *
  * Die Marke ist gesetzt statt als Bild eingebunden: sie bleibt bei jeder
- * Grösse scharf, erbt die Textfarbe und kostet keinen zusätzlichen Abruf.
- * Das Zeichen greift drei Zaunfelder mit durchlaufendem Querriegel auf.
+ * Grösse scharf und kostet keinen zusätzlichen Abruf. Alle Teile erben die
+ * Farbe vom Umfeld, damit eine einzige Regel im Kopfbereich genügt, um die
+ * Marke über dem Aufmacherbild auf Weiss zu stellen. Siehe .logo-* in
+ * styles/global.css.
  */
 interface Props {
   class?: string;
-  inverted?: boolean;
 }
-const { class: className = '', inverted = false } = Astro.props;
+const { class: className = '' } = Astro.props;
 ---
 
 <span class={`flex items-center gap-2.5 ${className}`}>
@@ -24,17 +25,15 @@ const { class: className = '', inverted = false } = Astro.props;
     aria-hidden="true"
   >
     <path d="M5 24V8l2.5-3.5L10 8v16M18 24V8l2.5-3.5L23 8v16" />
-    <path d="M2 13h24M2 18.5h24" class="text-brand-600" stroke="currentColor" />
+    <path class="logo-accent" d="M2 13h24M2 18.5h24" stroke="currentColor" />
   </svg>
 
   <span class="flex flex-col leading-none">
-    <span
-      class={`font-display text-[1.0625rem] font-bold tracking-[0.06em] ${inverted ? 'text-white' : 'text-ink'}`}
-      >HOFER</span
-    >
-    <span
-      class={`mt-0.5 text-[0.6875rem] uppercase tracking-[0.22em] ${inverted ? 'text-grey-300' : 'text-grey-600'}`}
-      >Zaunbau</span
-    >
+    <span class="logo-name font-display text-[1.0625rem] font-bold tracking-[0.06em]">
+      HOFER
+    </span>
+    <span class="logo-sub mt-0.5 text-[0.6875rem] uppercase tracking-[0.22em]">
+      Zaunbau
+    </span>
   </span>
 </span>

@@ -3,9 +3,9 @@
   "images": [
     {
       "name": "hero",
-      "ratio": "16:9",
-      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_101651_d5c1df5f-2aa2-4275-92b6-633f2fe45e00.png",
-      "motiv": "Anthrazitfarbener Metallzaun entlang eines modernen Schweizer Einfamilienhauses"
+      "ratio": "21:9",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_191840_3d5c9b4d-8f64-4900-acbd-88c585962444.png",
+      "motiv": "Lange Zaunlinie in starker Fluchtperspektive neben einem modernen Haus"
     },
     {
       "name": "metallzaun",
@@ -60,6 +60,12 @@
       "ratio": "4:3",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_143243_6c9ce52b-ff2a-461c-ac9d-5d14d0b7fc53.png",
       "motiv": "Metallzaun folgt einem Gefälle, jedes Feld exakt abgestuft"
+    },
+    {
+      "name": "heromontage",
+      "ratio": "16:9",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_191838_e8e72473-f258-4162-af55-a7155dcd2094.png",
+      "motiv": "Zaunbauer setzt ein Zaunfeld, Person seitlich und nicht erkennbar"
     }
   ]
 }

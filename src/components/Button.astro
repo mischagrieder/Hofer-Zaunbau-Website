@@ -10,7 +10,7 @@ import Icon, { type IconKey } from './Icon.astro';
  */
 interface Props {
   href?: string;
-  variant?: 'primary' | 'secondary' | 'quiet';
+  variant?: 'primary' | 'secondary' | 'quiet' | 'onDark';
   icon?: IconKey;
   type?: 'button' | 'submit';
   class?: string;
@@ -31,11 +31,19 @@ const base =
   'transition-[background-color,color,border-color,transform] duration-200 ease-[var(--ease-out-expo)] ' +
   'active:translate-y-px whitespace-nowrap';
 
+/**
+ * Varianten stehen bewusst hier und werden nicht von aussen per class
+ * überschrieben: zwei konkurrierende Utilities wie text-white und text-ink
+ * entscheiden sich nach der Reihenfolge im erzeugten Stylesheet, nicht nach
+ * der Reihenfolge im class-Attribut. Eine eigene Variante ist eindeutig.
+ */
 const variants = {
   primary: 'bg-brand-800 text-white px-7 py-3.5 hover:bg-brand-900',
   secondary:
     'border border-grey-300 text-ink px-7 py-3.5 hover:border-brand-800 hover:bg-brand-50',
   quiet: 'text-ink px-1 py-1 hover:text-brand-800',
+  // Für dunkle Flächen: weisse Fläche, dunkler Text.
+  onDark: 'bg-white text-ink px-7 py-3.5 hover:bg-brand-50',
 } as const;
 
 const Tag = href ? 'a' : 'button';

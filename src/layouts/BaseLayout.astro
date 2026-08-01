@@ -11,9 +11,17 @@ interface Props {
   /** Nur auf der Startseite gesetzt, damit der Titel dort nicht doppelt steht. */
   bareTitle?: boolean;
   noindex?: boolean;
+  /** Legt den Kopfbereich transparent über ein Aufmacherbild. */
+  heroOverlay?: boolean;
 }
 
-const { title, description, bareTitle = false, noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  bareTitle = false,
+  noindex = false,
+  heroOverlay = false,
+} = Astro.props;
 
 const pageTitle = bareTitle ? title : `${title} | ${site.name}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
@@ -109,7 +117,7 @@ const jsonLd = {
       Zum Inhalt springen
     </a>
 
-    <Header />
+    <Header overlay={heroOverlay} />
 
     <main id="main">
       <slot />

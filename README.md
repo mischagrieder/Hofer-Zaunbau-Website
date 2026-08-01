@@ -103,6 +103,11 @@ Die Farben, Schriftgrössen, Abstände und Rundungen sind als Tokens im Block
 - **Schrift**: Archivo für Überschriften, Inter für Fliesstext. Beide werden
   als Variable Font vom eigenen Server ausgeliefert, nur Latin, zusammen 83 KB.
   Kein Abruf bei Dritten.
+- **Aufmacher**: Randloses Bild mit Text darüber. Zwei fest gesetzte Verläufe
+  sichern den Kontrast, damit Weiss auch bei einem späteren Motivwechsel lesbar
+  bleibt. Der Kopfbereich liegt transparent darüber und wird beim Scrollen fest.
+- **Silbentrennung**: global abgeschaltet (hyphens: none). Wörter brechen nur an
+  Wortgrenzen, nie mitten im Wort.
 - **Bewegung**: Einblendungen beim Scrollen und Übergänge zwischen Seiten. Alles
   ist an `prefers-reduced-motion` gebunden und entfällt vollständig, wenn
   reduzierte Bewegung eingestellt ist.

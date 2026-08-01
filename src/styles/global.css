@@ -136,6 +136,24 @@
     /* Verhindert, dass Sprungziele unter dem fixierten Kopfbereich landen. */
     scroll-padding-top: 6.5rem;
     -webkit-text-size-adjust: 100%;
+
+    /* Silbentrennung vollständig aus. Deutsche Komposita sind lang, und eine
+       automatische Trennung mitten im Wort zerschlägt sonst Überschriften. */
+    hyphens: none;
+    -webkit-hyphens: none;
+  }
+
+  /* Wörter werden nie mitten im Wort umbrochen, nur an Wortgrenzen. */
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  a,
+  button {
+    overflow-wrap: normal;
+    word-break: normal;
   }
 
   body {
@@ -239,6 +257,69 @@
   .link-underline:focus-visible {
     background-size: 100% 1px;
   }
+
+  /* -------------------------------------------------------------------------
+     Wortmarke
+     Alle Teile erben die Farbe vom Kopfbereich. Dadurch genügt eine einzige
+     Regel, um die Marke über dem Aufmacherbild auf Weiss umzustellen.
+  ------------------------------------------------------------------------- */
+
+  .logo-name {
+    color: currentColor;
+  }
+
+  /* 72 Prozent ist der geprüfte Wert: bei 11 Pixel Schriftgrösse verlangt die
+     Richtlinie 4.5:1, darunter fällt die Zeile durch. */
+  .logo-sub {
+    color: color-mix(in srgb, currentColor 72%, transparent);
+  }
+
+  .logo-accent {
+    color: var(--color-brand-600);
+  }
+
+}
+
+/* ---------------------------------------------------------------------------
+   Kopfbereich über dem Aufmacherbild
+
+   Solange nicht gescrollt wurde, liegt der Kopfbereich transparent über dem
+   Bild und schaltet auf Weiss. Sobald der Aufmacher verlassen wird, greift
+   wieder die normale helle Darstellung.
+
+   Diese Regeln stehen bewusst ausserhalb jeder @layer: eine Regel ohne Layer
+   gewinnt gegen jede Regel in einem Layer, unabhängig von der Spezifität. In
+   @layer components würden die Utilities bg-paper und text-ink gewinnen, weil
+   ihr Layer später kommt.
+--------------------------------------------------------------------------- */
+
+#site-header[data-overlay]:not([data-scrolled]) {
+  background-color: transparent;
+  backdrop-filter: none;
+  color: white;
+}
+
+#site-header[data-overlay]:not([data-scrolled]) .logo-accent {
+  color: color-mix(in srgb, white 70%, transparent);
+}
+
+#site-header[data-overlay]:not([data-scrolled]) .nav-link {
+  color: color-mix(in srgb, white 82%, transparent);
+}
+
+#site-header[data-overlay]:not([data-scrolled]) .nav-link:hover,
+#site-header[data-overlay]:not([data-scrolled]) .nav-link[aria-current='page'] {
+  color: white;
+}
+
+#site-header[data-overlay]:not([data-scrolled]) .header-cta {
+  border-color: color-mix(in srgb, white 40%, transparent);
+  color: white;
+}
+
+#site-header[data-overlay]:not([data-scrolled]) .header-cta:hover {
+  border-color: white;
+  background-color: color-mix(in srgb, white 14%, transparent);
 }
 
 /* ---------------------------------------------------------------------------

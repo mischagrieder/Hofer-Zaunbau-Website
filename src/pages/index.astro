@@ -34,62 +34,81 @@ const galleryAlt: Record<(typeof galleryPreview)[number], string> = {
   title={`${site.name} | Zäune, Tore und Sichtschutz in Rothrist`}
   description={site.description}
   bareTitle
+  heroOverlay
 >
-  <!-- Aufmacher: geteiltes Raster. Die Schrift steht auf ruhigem Papierton,
-       das Bild läuft rechts bis an den Bildschirmrand. Kein Text auf Bild,
-       dadurch bleibt der Kontrast unabhängig vom Motiv verlässlich. -->
-  <section class="border-b border-grey-200">
-    <div class="grid items-stretch lg:grid-cols-2">
-      <div class="bleed-start flex items-center py-16 lg:py-28">
-        <div class="w-full lg:max-w-[36rem]">
-          <Eyebrow>Zaunbau aus Rothrist, seit {site.foundedYear}</Eyebrow>
+  <!-- Aufmacher: randloses Bild mit Text darüber.
+       Der Kontrast ist nicht dem Motiv überlassen: zwei Verläufe legen sich
+       fest berechnet über das Bild, oben für den Kopfbereich, unten für die
+       Schrift. Dadurch bleibt Weiss auf Blauschwarz auch dann sicher lesbar,
+       wenn das Motiv später gegen ein helleres getauscht wird. -->
+  <section class="relative flex min-h-[42rem] items-end overflow-hidden lg:min-h-[92svh]">
+    <Image
+      src={image('hero')}
+      alt="Lange anthrazitfarbene Zaunlinie in starker Fluchtperspektive neben einem modernen Schweizer Wohnhaus"
+      widths={[900, 1400, 1920, 2400]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 h-full w-full object-cover"
+    />
 
-          <h1 class="mt-7 font-display text-display">
-            Ein Zaun, der die Linie hält.
-          </h1>
+    <div
+      aria-hidden="true"
+      class="absolute inset-0 bg-linear-to-t from-brand-950/92 via-brand-950/55 to-brand-950/25"
+    >
+    </div>
+    <div
+      aria-hidden="true"
+      class="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-brand-950/60 to-transparent"
+    >
+    </div>
 
-          <p class="measure mt-7 text-lead text-grey-700">
-            Wir planen, liefern und montieren Zäune aus Metall, Holz und
-            Kunststoff, dazu Tore, Sichtschutz und Schlosserarbeiten. Sauber
-            gesetzt, exakt ausgerichtet und auf Jahrzehnte gedacht.
-          </p>
+    <div class="relative container-page pt-36 pb-20 lg:pt-44 lg:pb-28">
+      <p
+        class="flex items-center gap-3 text-eyebrow font-medium tracking-[0.14em] text-white/75 uppercase"
+      >
+        <span aria-hidden="true" class="h-px w-8 shrink-0 bg-white/50"></span>
+        Zaunbau aus Rothrist, seit {site.foundedYear}
+      </p>
 
-          <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
-            <Button href="/kontakt/" icon="arrow">Offerte anfragen</Button>
-            <a
-              href="/leistungen/"
-              class="link-underline font-medium text-grey-700 transition-colors duration-200 hover:text-ink"
-            >
-              Leistungen ansehen
-            </a>
-          </div>
+      <h1 class="mt-8 max-w-[18ch] font-display text-display text-white">
+        Zäune, die Bestand haben.
+      </h1>
 
-          <ul class="mt-12 space-y-3 border-t border-grey-200 pt-8">
-            {
-              promises.map((promise) => (
-                <li class="flex items-start gap-3 text-[0.9375rem] text-grey-700">
-                  <Icon name="check" size={18} class="mt-0.5 shrink-0 text-brand-800" />
-                  <span>{promise}</span>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      </div>
+      <p class="mt-8 max-w-xl text-lead text-white/80">
+        Geplant, gefertigt und montiert von einem Betrieb. Aus Metall, Holz oder
+        Kunststoff, exakt gesetzt und auf Jahrzehnte gedacht.
+      </p>
 
-      <div class="relative min-h-[22rem] lg:min-h-[44rem]">
-        <Image
-          src={image('hero')}
-          alt="Anthrazitfarbener Metallzaun mit senkrechten Stäben entlang des Vorgartens eines modernen Schweizer Einfamilienhauses"
-          widths={[720, 1080, 1600]}
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          loading="eager"
-          fetchpriority="high"
-          class="absolute inset-0 h-full w-full object-cover"
-        />
+      <div class="mt-11 flex flex-wrap items-center gap-4">
+        <Button href="/kontakt/" icon="arrow" variant="onDark">
+          Offerte anfragen
+        </Button>
+        <a
+          href={site.phone.href}
+          class="inline-flex items-center gap-2.5 rounded-full border border-white/35 px-7 py-3.5 font-medium text-white transition-colors duration-200 hover:border-white hover:bg-white/10"
+        >
+          <Icon name="phone" size={18} />
+          {site.phone.display}
+        </a>
       </div>
     </div>
   </section>
+
+  <!-- Schmales Band unter dem Aufmacher. Trägt die Zusagen, die vorher im
+       Aufmacher standen, und hält diesen dadurch frei von Beiwerk. -->
+  <div class="border-b border-grey-200 bg-white">
+    <ul class="container-page grid gap-x-10 gap-y-5 py-8 sm:grid-cols-3">
+      {
+        promises.map((promise) => (
+          <li class="flex items-start gap-3 text-[0.9375rem] text-grey-700">
+            <Icon name="check" size={18} class="mt-0.5 shrink-0 text-brand-800" />
+            <span>{promise}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 
   <!-- Leistungen -->
   <Section labelledby="leistungen-titel" tone="white">
