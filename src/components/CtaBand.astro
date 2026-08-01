@@ -1,0 +1,40 @@
+---
+import { site } from '../data/site';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import Reveal from './Reveal.astro';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+
+const {
+  title = 'Erzählen Sie uns von Ihrem Grundstück.',
+  text = 'Ein kurzer Anruf genügt für die erste Einschätzung. Für alles Weitere kommen wir vorbei, messen aus und schicken Ihnen eine klar aufgeschlüsselte Offerte.',
+} = Astro.props;
+---
+
+<section class="bg-brand-900 text-white">
+  <div class="container-page py-(--spacing-section)">
+    <Reveal class="grid gap-10 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-7">
+        <h2 class="font-display text-h2 text-balance">{title}</h2>
+        <p class="measure mt-6 text-lead text-grey-300">{text}</p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 lg:col-span-5 lg:justify-end">
+        <Button href="/kontakt/" icon="arrow" class="bg-white text-ink hover:bg-brand-50">
+          Offerte anfragen
+        </Button>
+        <a
+          href={site.phone.href}
+          class="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-7 py-3.5 font-medium transition-colors duration-200 hover:border-white/60 hover:bg-white/5"
+        >
+          <Icon name="phone" size={18} class="text-brand-600" />
+          {site.phone.display}
+        </a>
+      </div>
+    </Reveal>
+  </div>
+</section>

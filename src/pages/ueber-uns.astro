@@ -1,0 +1,142 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Reveal from '../components/Reveal.astro';
+import Section from '../components/Section.astro';
+import { areaServed, site } from '../data/site';
+import { image } from '../lib/images';
+
+const werte = [
+  {
+    icon: 'compass' as const,
+    title: 'Ehrlich beraten',
+    text: 'Wenn eine Reparatur genügt, sagen wir das. Ein Auftrag, der niemandem nützt, bringt uns keine Empfehlung.',
+  },
+  {
+    icon: 'wrench' as const,
+    title: 'Sauber ausgeführt',
+    text: 'Lotrechte Pfosten, gleichmässige Abstände, ruhige Linien auch über Gefälle. Daran lassen wir uns messen.',
+  },
+  {
+    icon: 'spark' as const,
+    title: 'Selbst gefertigt',
+    text: 'Sonderteile entstehen in der eigenen Werkstatt. Das macht uns unabhängig von Lieferfristen für Standardmasse.',
+  },
+  {
+    icon: 'offer' as const,
+    title: 'Verbindlich gerechnet',
+    text: 'Die Offerte weist Material und Montage getrennt aus. Was drinsteht, gilt.',
+  },
+];
+---
+
+<BaseLayout
+  title="Über uns"
+  description="HOFER Zaunbau wurde 2016 in Rothrist gegründet und wird von Martin Hofer geführt. Eigene Werkstatt, kurze Wege, Beratung vor Ort in der Region Aargau."
+>
+  <PageHeader
+    eyebrow="Über uns"
+    title="Ein Betrieb, eine Ansprechperson."
+    lead="Kein Callcenter, keine wechselnden Subunternehmer. Sie sprechen mit der Person, die später auch auf der Baustelle steht."
+  />
+
+  <Section>
+    <div class="container-page grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+      <Reveal class="lg:col-span-6">
+        <div class="overflow-hidden rounded-panel bg-grey-200">
+          <Image
+            src={image('werkstatt')}
+            alt="Aufgeräumte Metallwerkstatt mit einer Rohrrahmentür auf dem Schweisstisch"
+            widths={[560, 840, 1200]}
+            sizes="(min-width: 1024px) 48vw, 92vw"
+            loading="eager"
+            class="aspect-4/3 w-full object-cover"
+          />
+        </div>
+      </Reveal>
+
+      <Reveal class="lg:col-span-6" delay={90}>
+        <Eyebrow>Der Betrieb</Eyebrow>
+        <h2 class="mt-6 font-display text-h2">Seit {site.foundedYear} in Rothrist.</h2>
+        <p class="measure mt-6 text-lead text-grey-700">
+          {site.name} wurde {site.foundedYear} gegründet und wird von {site.owner}
+          {' '}geführt. Das Büro liegt an der {site.office.street}, die Werkstatt
+          an der {site.workshop.street}.
+        </p>
+        <p class="measure mt-5 text-grey-700">
+          Wir liefern und montieren Zäune aus Metall, Holz und Kunststoff,
+          fertigen Tore und Rohrrahmentüren und übernehmen Schlosserarbeiten
+          aller Art. Für Private ebenso wie für Gewerbe und Gemeinden.
+        </p>
+        <p class="measure mt-5 text-grey-700">
+          Weil alles im eigenen Haus entsteht, bleiben die Wege kurz: Beratung,
+          Fertigung und Montage laufen über dieselbe Hand. Das merkt man am
+          Ergebnis und an der Termintreue.
+        </p>
+      </Reveal>
+    </div>
+  </Section>
+
+  <Section tone="white" labelledby="werte-titel">
+    <div class="container-page">
+      <Reveal class="max-w-2xl">
+        <Eyebrow>Haltung</Eyebrow>
+        <h2 id="werte-titel" class="mt-6 font-display text-h2">
+          Worauf Sie sich verlassen können.
+        </h2>
+      </Reveal>
+
+      <ul class="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2">
+        {
+          werte.map((wert, index) => (
+            <Reveal as="li" delay={(index % 2) * 80} class="flex gap-5">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-800">
+                <Icon name={wert.icon} size={22} />
+              </span>
+              <div>
+                <h3 class="font-display text-h3">{wert.title}</h3>
+                <p class="mt-3 leading-relaxed text-grey-700">{wert.text}</p>
+              </div>
+            </Reveal>
+          ))
+        }
+      </ul>
+    </div>
+  </Section>
+
+  <Section labelledby="gebiet-titel">
+    <div class="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <Reveal class="lg:col-span-5">
+        <Eyebrow>Einzugsgebiet</Eyebrow>
+        <h2 id="gebiet-titel" class="mt-6 font-display text-h2">
+          In der Region zuhause.
+        </h2>
+        <p class="measure mt-6 text-grey-700">
+          Rothrist und die Orte rundherum erreichen wir mit kurzen Wegen. Das
+          hält Anfahrten günstig und Termine zuverlässig.
+        </p>
+      </Reveal>
+
+      <Reveal class="lg:col-span-7" delay={90}>
+        <ul class="flex flex-wrap gap-2.5">
+          {
+            areaServed.map((ort) => (
+              <li class="rounded-full border border-grey-300 bg-white px-4 py-2 text-[0.9375rem]">
+                {ort}
+              </li>
+            ))
+          }
+          <li class="rounded-full bg-brand-50 px-4 py-2 text-[0.9375rem] text-brand-800">
+            und Umgebung
+          </li>
+        </ul>
+      </Reveal>
+    </div>
+  </Section>
+
+  <CtaBand />
+</BaseLayout>

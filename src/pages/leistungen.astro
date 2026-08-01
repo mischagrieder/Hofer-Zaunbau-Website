@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Reveal from '../components/Reveal.astro';
+import Section from '../components/Section.astro';
+import { services } from '../data/site';
+---
+
+<BaseLayout
+  title="Leistungen"
+  description="Beratung vor Ort, Lieferung, fachgerechte Montage, Zaunreparaturen und Schlosserarbeiten. Alle Leistungen der HOFER Zaunbau in Rothrist im Überblick."
+>
+  <PageHeader
+    eyebrow="Leistungen"
+    title="Alles rund um den Zaun, aus einer Hand."
+    lead="Von der ersten Einschätzung am Telefon bis zum letzten justierten Torflügel. Sie haben durchgehend dieselbe Ansprechperson."
+  />
+
+  <Section>
+    <div class="container-page">
+      <ul class="grid gap-x-10 gap-y-16 lg:grid-cols-2">
+        {
+          services.map((service, index) => (
+            <Reveal as="li" delay={(index % 2) * 80} class="flex gap-6">
+              <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-800">
+                <Icon name={service.icon} size={24} />
+              </span>
+              <div>
+                <h2 class="font-display text-h3">{service.title}</h2>
+                <p class="measure mt-3 font-medium text-grey-700">{service.summary}</p>
+                <p class="measure mt-4 text-[0.9375rem] leading-relaxed text-grey-600">
+                  {service.detail}
+                </p>
+              </div>
+            </Reveal>
+          ))
+        }
+      </ul>
+    </div>
+  </Section>
+
+  <CtaBand
+    title="Unsicher, welche Leistung Sie brauchen?"
+    text="Beschreiben Sie kurz Ihre Situation. Wir sagen Ihnen ehrlich, ob eine Reparatur genügt oder ob sich ein neuer Zaun eher lohnt."
+  />
+</BaseLayout>

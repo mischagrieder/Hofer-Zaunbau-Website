@@ -1,0 +1,153 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import { areaServed, site } from '../data/site';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Nur auf der Startseite gesetzt, damit der Titel dort nicht doppelt steht. */
+  bareTitle?: boolean;
+  noindex?: boolean;
+}
+
+const { title, description, bareTitle = false, noindex = false } = Astro.props;
+
+const pageTitle = bareTitle ? title : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL('/images/og.jpg', site.url).href;
+
+/**
+ * Strukturierte Daten für die lokale Suche. Öffnungszeiten fehlen bewusst:
+ * sie sind nicht belegt und werden nicht erfunden, siehe data/site.ts.
+ */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  '@id': `${site.url}/#business`,
+  name: site.name,
+  description: site.description,
+  url: site.url,
+  telephone: site.phone.href.replace('tel:', ''),
+  email: site.email,
+  foundingDate: String(site.foundedYear),
+  founder: { '@type': 'Person', name: site.owner },
+  image: ogImage,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.office.street,
+    postalCode: site.office.postalCode,
+    addressLocality: site.office.city,
+    addressCountry: 'CH',
+  },
+  areaServed: areaServed.map((name) => ({ '@type': 'Place', name })),
+  knowsAbout: [
+    'Zaunbau',
+    'Metallzäune',
+    'Holzzäune',
+    'Sichtschutz',
+    'Tore',
+    'Schlosserarbeiten',
+  ],
+};
+---
+
+<!doctype html>
+<html lang="de-CH">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <meta name="theme-color" content="#f7f9fc" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Beide Schriften werden im ersten Viewport gebraucht und deshalb vorgeladen. -->
+    <link
+      rel="preload"
+      href="/fonts/archivo-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_CH" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(jsonLd)}
+    />
+
+    <ClientRouter />
+  </head>
+
+  <body>
+    <a
+      href="#main"
+      class="sr-only rounded-full focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-brand-900 focus:px-6 focus:py-3 focus:text-white"
+    >
+      Zum Inhalt springen
+    </a>
+
+    <Header />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      /**
+       * Scroll-Einblendung.
+       *
+       * Läuft nur, wenn der Besucher keine reduzierte Bewegung verlangt. In
+       * jedem anderen Fall bleiben die Elemente unverändert sichtbar, weil der
+       * versteckte Startzustand ausschliesslich in der passenden Media Query
+       * definiert ist.
+       */
+      const setupReveal = () => {
+        const targets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+        if (targets.length === 0) return;
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add('is-revealed');
+              observer.unobserve(entry.target);
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
+        );
+
+        targets.forEach((target) => observer.observe(target));
+      };
+
+      setupReveal();
+      document.addEventListener('astro:after-swap', setupReveal);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+---
+import type { FaqItem } from '../data/site';
+import Icon from './Icon.astro';
+
+/**
+ * Fragen und Antworten auf Basis von details und summary.
+ *
+ * Bewusst ohne JavaScript: das native Element bringt Aufklapplogik,
+ * Tastaturbedienung und den korrekten Zustand für Screenreader bereits mit.
+ * Das spart Skriptgewicht und funktioniert auch ohne JavaScript vollständig.
+ */
+interface Props {
+  items: readonly FaqItem[];
+}
+const { items } = Astro.props;
+---
+
+<div class="divide-y divide-grey-200 border-y border-grey-200">
+  {
+    items.map((item) => (
+      <details class="group">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-6 font-display text-h3 transition-colors duration-200 hover:text-brand-800 [&::-webkit-details-marker]:hidden">
+          <span class="text-balance">{item.question}</span>
+          <span
+            aria-hidden="true"
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-grey-300 transition-transform duration-300 ease-[var(--ease-out-expo)] group-open:rotate-180"
+          >
+            <Icon name="chevron" size={18} />
+          </span>
+        </summary>
+        <p class="measure pb-7 text-grey-700">{item.answer}</p>
+      </details>
+    ))
+  }
+</div>

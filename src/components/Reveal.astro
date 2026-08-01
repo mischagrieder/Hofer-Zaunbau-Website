@@ -1,0 +1,22 @@
+---
+/**
+ * Hüllt Inhalte für die Scroll-Einblendung ein.
+ *
+ * Der Startzustand steht ausschliesslich in der CSS-Abfrage
+ * prefers-reduced-motion: no-preference. Wer reduzierte Bewegung eingestellt
+ * hat, bekommt den Inhalt sofort sichtbar, ohne dass JavaScript laufen muss.
+ * Fällt JavaScript ganz aus, macht das Skript in BaseLayout alle Elemente
+ * sichtbar, damit nie Inhalt verborgen bleibt.
+ */
+interface Props {
+  delay?: number;
+  as?: 'div' | 'li' | 'article' | 'section';
+  class?: string;
+}
+
+const { delay = 0, as: Tag = 'div', class: className = '' } = Astro.props as Props;
+---
+
+<Tag data-reveal class={className} style={delay ? `--reveal-delay:${delay}ms` : undefined}>
+  <slot />
+</Tag>

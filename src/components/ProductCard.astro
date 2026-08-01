@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets';
+import type { Product } from '../data/site';
+import { image } from '../lib/images';
+import Icon from './Icon.astro';
+
+interface Props {
+  product: Product;
+  eager?: boolean;
+}
+const { product, eager = false } = Astro.props;
+---
+
+<article id={product.slug} class="group scroll-mt-32">
+  <div class="overflow-hidden rounded-panel bg-grey-200">
+    <Image
+      src={image(product.image)}
+      alt={product.alt}
+      widths={[400, 640, 900]}
+      sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw"
+      loading={eager ? 'eager' : 'lazy'}
+      class="aspect-4/3 w-full object-cover transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
+    />
+  </div>
+
+  <h3 class="mt-6 font-display text-h3">{product.title}</h3>
+  <p class="measure mt-3 text-grey-700">{product.summary}</p>
+
+  <ul class="mt-5 space-y-2.5">
+    {
+      product.features.map((feature) => (
+        <li class="flex items-start gap-3 text-[0.9375rem] text-grey-700">
+          <Icon name="check" size={17} class="mt-1 shrink-0 text-brand-800" />
+          <span>{feature}</span>
+        </li>
+      ))
+    }
+  </ul>
+</article>

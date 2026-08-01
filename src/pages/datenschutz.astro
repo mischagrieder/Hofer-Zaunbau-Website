@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout
+  title="Datenschutz"
+  description="Datenschutzerklärung der HOFER Zaunbau, Rothrist. Welche Daten beim Besuch der Website und bei einer Anfrage bearbeitet werden."
+>
+  <PageHeader eyebrow="Rechtliches" title="Datenschutzerklärung" />
+
+  <Section>
+    <div class="container-page measure space-y-10">
+      <div
+        class="rounded-panel border border-brand-200 bg-brand-50 p-6 text-[0.9375rem] leading-relaxed"
+      >
+        <p class="font-medium text-brand-900">Vor der Veröffentlichung prüfen</p>
+        <p class="mt-2 text-grey-700">
+          Dieser Text beschreibt den Stand der Website, wie sie hier gebaut ist:
+          ohne Analysewerkzeuge, ohne Werbenetzwerke und ohne Inhalte von
+          Drittanbietern. Kommt später etwas davon dazu, muss dieser Abschnitt
+          angepasst werden. Der Text ersetzt keine Rechtsberatung.
+        </p>
+      </div>
+
+      <section>
+        <h2 class="font-display text-h3">Verantwortliche Stelle</h2>
+        <address class="mt-4 space-y-1 not-italic text-grey-700">
+          <p class="font-medium text-ink">{site.legalName}</p>
+          <p>{site.office.street}, {site.office.postalCode} {site.office.city}</p>
+          <p>
+            <a href={`mailto:${site.email}`} class="link-underline text-brand-800"
+              >{site.email}</a
+            >
+          </p>
+        </address>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Grundsatz</h2>
+        <p class="mt-4 text-grey-700">
+          Wir bearbeiten Personendaten nach dem Schweizer Datenschutzgesetz. Es
+          werden nur Daten bearbeitet, die für den jeweiligen Zweck nötig sind,
+          und nur so lange, wie es dieser Zweck verlangt.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Aufruf der Website</h2>
+        <p class="mt-4 text-grey-700">
+          Beim Aufruf werden von der Infrastruktur des Hosters technisch nötige
+          Angaben protokolliert, etwa gekürzte Adressdaten der Verbindung,
+          Zeitpunkt, aufgerufene Seite und Angaben zum verwendeten Programm.
+          Diese Protokolle dienen dem sicheren Betrieb und der Fehlersuche.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Anfragen über Formular, Telefon und Mail</h2>
+        <p class="mt-4 text-grey-700">
+          Wenn Sie uns kontaktieren, bearbeiten wir die von Ihnen gemachten
+          Angaben, um die Anfrage zu beantworten und ein allfälliges Angebot zu
+          erstellen. Eine Weitergabe an Dritte erfolgt nur, soweit sie für die
+          Ausführung nötig ist, etwa an einen Lieferanten für bestelltes
+          Material, oder wenn eine gesetzliche Pflicht besteht.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Keine Analyse und keine Werbewerkzeuge</h2>
+        <p class="mt-4 text-grey-700">
+          Diese Website setzt keine Analysedienste und keine Werbenetzwerke ein.
+          Es werden keine Cookies zur Wiedererkennung gesetzt. Schriften werden
+          vom eigenen Server ausgeliefert, es entsteht dadurch keine Verbindung
+          zu Dritten.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Ihre Rechte</h2>
+        <p class="mt-4 text-grey-700">
+          Sie können jederzeit Auskunft über die zu Ihrer Person bearbeiteten
+          Daten verlangen sowie deren Berichtigung oder Löschung fordern. Eine
+          Nachricht an {site.email} genügt.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Änderungen</h2>
+        <p class="mt-4 text-grey-700">
+          Diese Erklärung kann angepasst werden, wenn sich die Website oder die
+          rechtlichen Vorgaben ändern. Massgebend ist die jeweils hier
+          veröffentlichte Fassung.
+        </p>
+      </section>
+    </div>
+  </Section>
+</BaseLayout>

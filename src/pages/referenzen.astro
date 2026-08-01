@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Gallery from '../components/Gallery.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import { references } from '../data/site';
+---
+
+<BaseLayout
+  title="Referenzen"
+  description="Ausgeführte Zäune, Tore und Sichtschutzlösungen der HOFER Zaunbau: Metall, Holz, Kunststoff und Gewerbeanlagen in Rothrist und der Region."
+>
+  <PageHeader
+    eyebrow="Referenzen"
+    title="Ein Blick auf unsere Arbeit."
+    lead="Typische Ausführungen aus Metall, Holz und Kunststoff, dazu Tore und Anlagen für Gewerbe. Klicken Sie ein Bild an für die Grossansicht."
+  />
+
+  <Section>
+    <div class="container-page">
+      <Gallery items={references} />
+
+      <p class="measure mt-14 text-sm leading-relaxed text-grey-600">
+        Hinweis: Die gezeigten Aufnahmen sind digital erzeugte Beispielbilder.
+        Sie stehen für typische Ausführungen und dokumentieren keine konkret
+        abgeschlossenen Aufträge.
+      </p>
+    </div>
+  </Section>
+
+  <CtaBand
+    title="Etwas Ähnliches für Ihr Grundstück?"
+    text="Sagen Sie uns, welche Ausführung Ihnen zusagt. Wir schauen vorbei, messen aus und rechnen Ihnen die Variante durch."
+  />
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import { nav } from '../data/site';
+---
+
+<BaseLayout
+  title="Seite nicht gefunden"
+  description="Die aufgerufene Seite existiert nicht. Hier finden Sie zurück zur Übersicht."
+  noindex
+>
+  <section class="container-page flex min-h-[60vh] flex-col justify-center py-24">
+    <div class="max-w-2xl">
+      <Eyebrow>Fehler 404</Eyebrow>
+      <h1 class="mt-7 font-display text-h1">Diese Seite gibt es nicht.</h1>
+      <p class="measure mt-6 text-lead text-grey-700">
+        Womöglich wurde sie verschoben oder die Adresse enthält einen Tippfehler.
+        Über die folgenden Seiten kommen Sie weiter.
+      </p>
+
+      <div class="mt-9">
+        <Button href="/" icon="arrow">Zur Startseite</Button>
+      </div>
+
+      <ul class="mt-12 flex flex-wrap gap-x-6 gap-y-3 border-t border-grey-200 pt-8">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} class="link-underline font-medium text-grey-700 hover:text-ink">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

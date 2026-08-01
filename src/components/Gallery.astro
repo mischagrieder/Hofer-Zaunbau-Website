@@ -1,0 +1,176 @@
+---
+import { Image } from 'astro:assets';
+import type { Reference } from '../data/site';
+import { image } from '../lib/images';
+import Icon from './Icon.astro';
+import Reveal from './Reveal.astro';
+
+/**
+ * Galerie mit Grossansicht.
+ *
+ * Die Grossansicht nutzt das native dialog-Element: Fokusfang, Schliessen mit
+ * Escape und die Auszeichnung als modaler Dialog kommen damit vom Browser.
+ * Ergänzt sind nur Blättern mit den Pfeiltasten und das Nachführen der Bilder.
+ * Ohne JavaScript bleibt das Raster als vollwertige Bildübersicht bestehen.
+ */
+interface Props {
+  items: readonly Reference[];
+}
+const { items } = Astro.props;
+---
+
+<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {
+    items.map((item, index) => (
+      <Reveal as="li" delay={(index % 3) * 80}>
+        <button
+          type="button"
+          class="group block w-full overflow-hidden rounded-panel bg-grey-200 text-start"
+          data-lightbox-open={index}
+        >
+          <span class="relative block">
+            <Image
+              src={image(item.image)}
+              alt={item.alt}
+              widths={[400, 640, 900]}
+              sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw"
+              loading={index < 3 ? 'eager' : 'lazy'}
+              class="aspect-4/3 w-full object-cover transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
+            />
+            <span
+              aria-hidden="true"
+              class="absolute inset-0 bg-brand-950/0 transition-colors duration-300 group-hover:bg-brand-950/15"
+            />
+          </span>
+
+          <span class="flex items-start justify-between gap-4 bg-white px-5 py-4">
+            <span class="block">
+              <span class="block font-display text-[1.0625rem] font-semibold">
+                {item.title}
+              </span>
+              <span class="mt-0.5 block text-sm text-grey-600">{item.place}</span>
+            </span>
+            <span class="mt-1 shrink-0 text-xs tracking-[0.1em] text-brand-700 uppercase">
+              {item.category}
+            </span>
+          </span>
+        </button>
+      </Reveal>
+    ))
+  }
+</ul>
+
+<dialog
+  id="lightbox"
+  aria-label="Grossansicht"
+  class="w-full max-w-5xl bg-transparent p-0 backdrop:bg-brand-950/85 backdrop:backdrop-blur-sm"
+>
+  <div class="relative">
+    <img
+      id="lightbox-image"
+      src=""
+      alt=""
+      class="max-h-[78vh] w-full rounded-panel bg-brand-900 object-contain"
+    />
+
+    <div class="mt-4 flex items-center justify-between gap-4 text-white">
+      <p id="lightbox-caption" class="font-display text-lg"></p>
+      <p id="lightbox-counter" class="text-sm text-grey-400" aria-hidden="true"></p>
+    </div>
+
+    <div class="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between px-3">
+      <button
+        type="button"
+        data-lightbox-prev
+        class="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 transition-colors duration-200 hover:bg-white"
+      >
+        <span class="sr-only">Vorheriges Bild</span>
+        <Icon name="chevron" size={22} class="rotate-90" />
+      </button>
+      <button
+        type="button"
+        data-lightbox-next
+        class="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 transition-colors duration-200 hover:bg-white"
+      >
+        <span class="sr-only">Nächstes Bild</span>
+        <Icon name="chevron" size={22} class="-rotate-90" />
+      </button>
+    </div>
+
+    <button
+      type="button"
+      data-lightbox-close
+      class="absolute top-3 right-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 transition-colors duration-200 hover:bg-white"
+    >
+      <span class="sr-only">Grossansicht schliessen</span>
+      <Icon name="close" size={22} />
+    </button>
+  </div>
+</dialog>
+
+<script>
+  const setupLightbox = () => {
+    const dialog = document.querySelector<HTMLDialogElement>('#lightbox');
+    const picture = document.querySelector<HTMLImageElement>('#lightbox-image');
+    const caption = document.querySelector<HTMLElement>('#lightbox-caption');
+    const counter = document.querySelector<HTMLElement>('#lightbox-counter');
+    const triggers = Array.from(
+      document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]'),
+    );
+
+    if (!dialog || !picture || !caption || !counter || triggers.length === 0) return;
+
+    /* Die Quellen stammen aus dem bereits gerenderten Raster. Dadurch greift
+       die Grossansicht auf dieselben von Astro erzeugten Dateien zu und lädt
+       nichts zusätzlich herunter. */
+    const slides = triggers.map((trigger) => {
+      const img = trigger.querySelector('img');
+      return {
+        src: img?.currentSrc || img?.src || '',
+        alt: img?.getAttribute('alt') ?? '',
+        title: trigger.querySelector('.font-display')?.textContent?.trim() ?? '',
+      };
+    });
+
+    let current = 0;
+
+    const show = (index: number) => {
+      current = (index + slides.length) % slides.length;
+      const slide = slides[current];
+      picture.src = slide.src;
+      picture.alt = slide.alt;
+      caption.textContent = slide.title;
+      counter.textContent = `${current + 1} von ${slides.length}`;
+    };
+
+    triggers.forEach((trigger, index) => {
+      trigger.addEventListener('click', () => {
+        show(index);
+        dialog.showModal();
+      });
+    });
+
+    dialog
+      .querySelector('[data-lightbox-close]')
+      ?.addEventListener('click', () => dialog.close());
+    dialog
+      .querySelector('[data-lightbox-prev]')
+      ?.addEventListener('click', () => show(current - 1));
+    dialog
+      .querySelector('[data-lightbox-next]')
+      ?.addEventListener('click', () => show(current + 1));
+
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') show(current - 1);
+      if (event.key === 'ArrowRight') show(current + 1);
+    });
+
+    /* Klick auf die abgedunkelte Fläche neben dem Bild schliesst den Dialog. */
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  };
+
+  setupLightbox();
+  document.addEventListener('astro:after-swap', setupLightbox);
+</script>

@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Reveal from '../components/Reveal.astro';
+import Section from '../components/Section.astro';
+import { areaServed, site, steps } from '../data/site';
+
+const places = [site.office, site.workshop];
+---
+
+<BaseLayout
+  title="Kontakt"
+  description="HOFER Zaunbau in Rothrist: Telefon 079 686 62 09, info@hofer-zaunbau.ch. Anfrage stellen und eine klar aufgeschlüsselte Offerte erhalten."
+>
+  <PageHeader
+    eyebrow="Kontakt"
+    title="Schildern Sie uns Ihr Vorhaben."
+    lead="Am schnellsten geht es telefonisch. Wer lieber schreibt, nutzt das Formular. Wir melden uns zurück und vereinbaren einen Termin vor Ort."
+  />
+
+  <Section>
+    <div class="container-page grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <Reveal>
+          <h2 class="font-display text-h2">Anfrage stellen</h2>
+          <p class="measure mt-5 text-grey-700">
+            Je mehr Sie uns mitgeben, desto genauer fällt die erste
+            Einschätzung aus. Felder mit Stern sind nötig, alles Weitere klären
+            wir im Gespräch.
+          </p>
+          <div class="mt-10">
+            <ContactForm />
+          </div>
+        </Reveal>
+      </div>
+
+      <aside class="lg:col-span-5">
+        <Reveal delay={100}>
+          <div class="rounded-panel bg-white p-8 shadow-raise">
+            <h2 class="font-display text-h3">Direkt erreichbar</h2>
+
+            <div class="mt-6 space-y-4">
+              <a
+                href={site.phone.href}
+                class="flex items-center gap-4 rounded-xl border border-grey-200 px-5 py-4 transition-colors duration-200 hover:border-brand-600 hover:bg-brand-50"
+              >
+                <Icon name="phone" size={22} class="shrink-0 text-brand-800" />
+                <span>
+                  <span class="block text-sm text-grey-600">Telefon</span>
+                  <span class="block font-display text-lg font-semibold">
+                    {site.phone.display}
+                  </span>
+                </span>
+              </a>
+
+              <a
+                href={`mailto:${site.email}`}
+                class="flex items-center gap-4 rounded-xl border border-grey-200 px-5 py-4 transition-colors duration-200 hover:border-brand-600 hover:bg-brand-50"
+              >
+                <Icon name="mail" size={22} class="shrink-0 text-brand-800" />
+                <span class="min-w-0">
+                  <span class="block text-sm text-grey-600">Mail</span>
+                  <span class="block truncate font-medium">{site.email}</span>
+                </span>
+              </a>
+            </div>
+
+            <h3 class="mt-10 font-display text-h3">Standorte</h3>
+            <div class="mt-5 space-y-6">
+              {
+                places.map((place) => (
+                  <address class="flex gap-4 not-italic">
+                    <Icon name="pin" size={20} class="mt-1 shrink-0 text-brand-800" />
+                    <div>
+                      <p class="font-medium">{place.label}</p>
+                      <p class="text-grey-700">{place.street}</p>
+                      <p class="text-grey-700">
+                        {place.postalCode} {place.city}
+                      </p>
+                    </div>
+                  </address>
+                ))
+              }
+            </div>
+
+            <h3 class="mt-10 font-display text-h3">Einzugsgebiet</h3>
+            <p class="mt-4 text-[0.9375rem] leading-relaxed text-grey-700">
+              {areaServed.join(', ')} und Umgebung. Fragen Sie an, wenn Ihr Ort
+              nicht dabei ist.
+            </p>
+          </div>
+        </Reveal>
+      </aside>
+    </div>
+  </Section>
+
+  <Section tone="white" labelledby="ablauf-kontakt">
+    <div class="container-page">
+      <Reveal class="max-w-2xl">
+        <h2 id="ablauf-kontakt" class="font-display text-h2">
+          Was nach Ihrer Anfrage passiert.
+        </h2>
+      </Reveal>
+
+      <ol class="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          steps.map((step, index) => (
+            <Reveal as="li" delay={index * 80}>
+              <span
+                aria-hidden="true"
+                class="font-display text-4xl font-semibold text-grey-300"
+              >
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 class="mt-4 font-display text-h3">{step.title}</h3>
+              <p class="mt-3 text-[0.9375rem] leading-relaxed text-grey-700">
+                {step.text}
+              </p>
+            </Reveal>
+          ))
+        }
+      </ol>
+    </div>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Reveal from '../components/Reveal.astro';
+import Section from '../components/Section.astro';
+import { products } from '../data/site';
+---
+
+<BaseLayout
+  title="Produkte"
+  description="Metallzäune, Holzzäune, Kunststoffzäune, Sichtschutz, Tore, Rohrrahmentüren, Industriezäune und Spielplatzgeräte. Das Sortiment der HOFER Zaunbau in Rothrist."
+>
+  <PageHeader
+    eyebrow="Produkte"
+    title="Für jedes Grundstück das passende System."
+    lead="Metall, Holz oder Kunststoff, offen oder blickdicht, für den Vorgarten oder das Gewerbeareal. Was es ab Lager nicht gibt, entsteht in der eigenen Werkstatt."
+  />
+
+  <Section>
+    <div class="container-page">
+      <div class="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          products.map((product, index) => (
+            <Reveal delay={(index % 3) * 80}>
+              <ProductCard product={product} eager={index < 3} />
+            </Reveal>
+          ))
+        }
+      </div>
+    </div>
+  </Section>
+
+  <CtaBand
+    title="Noch unentschlossen beim Material?"
+    text="Wir zeigen Ihnen Muster, vergleichen Kosten über die Lebensdauer und sagen Ihnen offen, was sich an Ihrer Lage bewährt."
+  />
+</BaseLayout>

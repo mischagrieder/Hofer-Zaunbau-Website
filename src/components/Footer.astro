@@ -1,0 +1,119 @@
+---
+import { nav, products, site } from '../data/site';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-brand-900 text-grey-300">
+  <div class="container-page py-(--spacing-section)">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-4">
+        <Logo inverted />
+        <p class="measure-tight mt-6 text-[0.9375rem] leading-relaxed text-grey-400">
+          Zäune, Tore und Sichtschutz aus Rothrist. Geplant, geliefert und
+          montiert von {site.owner}, seit {site.foundedYear}.
+        </p>
+
+        <div class="mt-8 flex flex-col gap-3">
+          <a
+            href={site.phone.href}
+            class="inline-flex items-center gap-3 text-white transition-colors duration-200 hover:text-brand-600"
+          >
+            <Icon name="phone" size={18} class="text-brand-600" />
+            <span class="font-medium">{site.phone.display}</span>
+          </a>
+          <a
+            href={`mailto:${site.email}`}
+            class="inline-flex items-center gap-3 transition-colors duration-200 hover:text-brand-600"
+          >
+            <Icon name="mail" size={18} class="text-brand-600" />
+            <span>{site.email}</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <h2 class="font-display text-sm font-semibold tracking-[0.1em] text-white uppercase">
+          Website
+        </h2>
+        <ul class="mt-5 space-y-3 text-[0.9375rem]">
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="link-underline transition-colors duration-200 hover:text-white"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="lg:col-span-3">
+        <h2 class="font-display text-sm font-semibold tracking-[0.1em] text-white uppercase">
+          Produkte
+        </h2>
+        <ul class="mt-5 space-y-3 text-[0.9375rem]">
+          {
+            products.slice(0, 6).map((product) => (
+              <li>
+                <a
+                  href={`/produkte/#${product.slug}`}
+                  class="link-underline transition-colors duration-200 hover:text-white"
+                >
+                  {product.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <address class="not-italic lg:col-span-3">
+        <h2 class="font-display text-sm font-semibold tracking-[0.1em] text-white uppercase">
+          Standorte
+        </h2>
+        <div class="mt-5 space-y-5 text-[0.9375rem]">
+          {
+            [site.office, site.workshop].map((place) => (
+              <div class="flex gap-3">
+                <Icon name="pin" size={18} class="mt-0.5 shrink-0 text-brand-600" />
+                <div>
+                  <p class="text-white">{place.label}</p>
+                  <p class="text-grey-400">{place.street}</p>
+                  <p class="text-grey-400">
+                    {place.postalCode} {place.city}
+                  </p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </address>
+    </div>
+
+    <div
+      class="mt-14 flex flex-col gap-6 border-t border-white/10 pt-8 text-sm text-grey-400 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>&copy; {year} {site.name}</p>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        <li>
+          <a href="/impressum/" class="link-underline hover:text-white">Impressum</a>
+        </li>
+        <li>
+          <a href="/datenschutz/" class="link-underline hover:text-white">Datenschutz</a>
+        </li>
+      </ul>
+    </div>
+
+    <p class="mt-6 text-xs leading-relaxed text-grey-300">
+      Hinweis: Die auf dieser Website gezeigten Aufnahmen sind digital erzeugte
+      Beispielbilder und dokumentieren keine konkret ausgeführten Aufträge.
+    </p>
+  </div>
+</footer>

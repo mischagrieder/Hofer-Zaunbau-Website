@@ -1,0 +1,206 @@
+---
+import { nav, site } from '../data/site';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-50 border-b border-transparent bg-paper/80 backdrop-blur-md transition-[border-color,box-shadow,background-color] duration-300 ease-[var(--ease-out-expo)] data-[scrolled]:border-grey-200 data-[scrolled]:bg-paper/95 data-[scrolled]:shadow-raise"
+>
+  <div class="container-page flex h-20 items-center justify-between gap-6">
+    <a
+      href="/"
+      class="rounded-sm transition-opacity duration-200 hover:opacity-70"
+      aria-label={`${site.name}, zur Startseite`}
+    >
+      <Logo class="h-8 w-auto" />
+    </a>
+
+    <nav aria-label="Hauptnavigation" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class="relative rounded-full px-4 py-2 text-[0.9375rem] text-grey-700 transition-colors duration-200 hover:text-ink aria-[current=page]:text-ink"
+              >
+                {item.label}
+                {isActive(item.href) && (
+                  <span
+                    aria-hidden="true"
+                    class="absolute inset-x-4 -bottom-0.5 h-px bg-brand-600"
+                  />
+                )}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={site.phone.href}
+        class="hidden items-center gap-2 rounded-full border border-grey-300 px-5 py-2.5 text-[0.9375rem] font-medium transition-colors duration-200 hover:border-brand-900 hover:bg-white md:inline-flex"
+      >
+        <Icon name="phone" size={17} class="text-brand-800" />
+        <span>{site.phone.display}</span>
+      </a>
+
+      <button
+        type="button"
+        id="nav-toggle"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-grey-300 transition-colors duration-200 hover:bg-white lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span class="sr-only">Menü öffnen</span>
+        <Icon name="menu" size={22} />
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Navigation -->
+<div
+  id="mobile-nav"
+  hidden
+  class="fixed inset-0 z-[60] bg-paper lg:hidden"
+>
+  <div class="container-page flex h-20 items-center justify-between">
+    <Logo class="h-8 w-auto" />
+    <button
+      type="button"
+      id="nav-close"
+      class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-grey-300 transition-colors duration-200 hover:bg-white"
+    >
+      <span class="sr-only">Menü schliessen</span>
+      <Icon name="close" size={22} />
+    </button>
+  </div>
+
+  <nav aria-label="Hauptnavigation mobil" class="container-page mt-6">
+    <ul class="flex flex-col">
+      {
+        nav.map((item, i) => (
+          <li class="border-b border-grey-200">
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class="flex items-center justify-between py-5 font-display text-2xl tracking-[-0.02em] aria-[current=page]:text-brand-800"
+              style={`--i:${i}`}
+            >
+              {item.label}
+              <Icon name="arrow" size={20} class="text-grey-400" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-10 flex flex-col gap-3">
+      <a
+        href={site.phone.href}
+        class="inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-900 px-7 py-4 font-medium text-white"
+      >
+        <Icon name="phone" size={18} />
+        {site.phone.display}
+      </a>
+      <a
+        href={`mailto:${site.email}`}
+        class="inline-flex items-center justify-center gap-2.5 rounded-full border border-grey-300 px-7 py-4 font-medium"
+      >
+        <Icon name="mail" size={18} class="text-brand-800" />
+        Nachricht schreiben
+      </a>
+    </div>
+  </nav>
+</div>
+
+<script>
+  const header = document.getElementById('site-header');
+  const toggle = document.getElementById('nav-toggle');
+  const close = document.getElementById('nav-close');
+  const panel = document.getElementById('mobile-nav');
+
+  /* Kompakter Kopfbereich, sobald gescrollt wird. Der IntersectionObserver
+     an einem Sentinel vermeidet einen Scroll-Listener auf dem Hauptthread. */
+  if (header) {
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;';
+    document.body.prepend(sentinel);
+
+    new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) header.removeAttribute('data-scrolled');
+        else header.setAttribute('data-scrolled', '');
+      },
+      { rootMargin: '-32px 0px 0px 0px' },
+    ).observe(sentinel);
+  }
+
+  if (toggle && close && panel) {
+    let lastFocused: HTMLElement | null = null;
+
+    const focusable = () =>
+      Array.from(
+        panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      ).filter((el) => el.offsetParent !== null);
+
+    const open = () => {
+      lastFocused = document.activeElement as HTMLElement;
+      panel.hidden = false;
+      toggle.setAttribute('aria-expanded', 'true');
+      document.documentElement.style.overflow = 'hidden';
+      focusable()[0]?.focus();
+    };
+
+    const shut = () => {
+      panel.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+      document.documentElement.style.overflow = '';
+      lastFocused?.focus();
+    };
+
+    toggle.addEventListener('click', open);
+    close.addEventListener('click', shut);
+
+    /* Fokus bleibt im geöffneten Menü gefangen, Escape schliesst es. */
+    document.addEventListener('keydown', (event) => {
+      if (panel.hidden) return;
+
+      if (event.key === 'Escape') {
+        shut();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const items = focusable();
+      if (items.length === 0) return;
+
+      const first = items[0];
+      const last = items[items.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    /* Nach einem Seitenwechsel darf kein gesperrter Scrollzustand zurückbleiben. */
+    document.addEventListener('astro:before-swap', () => {
+      document.documentElement.style.overflow = '';
+    });
+  }
+</script>

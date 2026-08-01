@@ -1,0 +1,60 @@
+---
+import Icon, { type IconKey } from './Icon.astro';
+
+/**
+ * Einziger Button der Website. Rendert je nach übergebenem href als Link oder
+ * als echtes button-Element, damit die Semantik immer zur Funktion passt.
+ *
+ * Farbwahl: Die primäre Fläche ist das Markenblau brand-800 mit weisser
+ * Schrift, Kontrast 9.7:1 und damit deutlich über der Anforderung von 4.5:1.
+ */
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'quiet';
+  icon?: IconKey;
+  type?: 'button' | 'submit';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  icon,
+  type = 'button',
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const base =
+  'group inline-flex items-center justify-center gap-2.5 rounded-full font-medium ' +
+  'transition-[background-color,color,border-color,transform] duration-200 ease-[var(--ease-out-expo)] ' +
+  'active:translate-y-px whitespace-nowrap';
+
+const variants = {
+  primary: 'bg-brand-800 text-white px-7 py-3.5 hover:bg-brand-900',
+  secondary:
+    'border border-grey-300 text-ink px-7 py-3.5 hover:border-brand-800 hover:bg-brand-50',
+  quiet: 'text-ink px-1 py-1 hover:text-brand-800',
+} as const;
+
+const Tag = href ? 'a' : 'button';
+const classes = `${base} ${variants[variant]} ${className}`;
+---
+
+<Tag
+  class={classes}
+  {...href ? { href } : { type }}
+  {...rest}
+>
+  <slot />
+  {
+    icon && (
+      <Icon
+        name={icon}
+        size={18}
+        class="transition-transform duration-200 ease-[var(--ease-out-expo)] group-hover:translate-x-0.5"
+      />
+    )
+  }
+</Tag>

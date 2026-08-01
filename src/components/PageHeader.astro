@@ -1,0 +1,24 @@
+---
+import Eyebrow from './Eyebrow.astro';
+
+/**
+ * Einheitlicher Seitenkopf für alle Unterseiten. Hält Überzeile, Titel und
+ * Lauftext auf jeder Seite im gleichen Raster und Rhythmus.
+ */
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+}
+const { eyebrow, title, lead } = Astro.props;
+---
+
+<section class="border-b border-grey-200 bg-white">
+  <div class="container-page py-20 lg:py-28">
+    <div class="max-w-3xl">
+      <Eyebrow>{eyebrow}</Eyebrow>
+      <h1 class="mt-7 font-display text-h1">{title}</h1>
+      {lead && <p class="measure mt-7 text-lead text-grey-700">{lead}</p>}
+    </div>
+  </div>
+</section>

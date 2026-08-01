@@ -1,0 +1,59 @@
+{
+  "note": "Quellen der Bildmotive. Erzeugt mit Higgsfield (nano_banana_pro, 2K). Die Datei dient scripts/fetch-images.mjs als Bezugsliste und dokumentiert zugleich die Herkunft jedes Motivs.",
+  "images": [
+    {
+      "name": "hero",
+      "ratio": "16:9",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_101651_d5c1df5f-2aa2-4275-92b6-633f2fe45e00.png",
+      "motiv": "Anthrazitfarbener Metallzaun entlang eines modernen Schweizer Einfamilienhauses"
+    },
+    {
+      "name": "metallzaun",
+      "ratio": "4:3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_101748_d76521d2-977d-4896-a9c9-f29ef94a84a8.png",
+      "motiv": "Detail eines pulverbeschichteten Metallzauns auf Betonsockel"
+    },
+    {
+      "name": "holzzaun",
+      "ratio": "4:3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_102208_ddeed184-6e2d-44cf-820e-795c79bc1429.png",
+      "motiv": "Waagrechter Lattenzaun aus Lärche an einer Gartenterrasse"
+    },
+    {
+      "name": "kunststoffzaun",
+      "ratio": "4:3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142916_59e24887-69c0-43be-9b41-8f42183e431d.png",
+      "motiv": "Weisser Kunststoffzaun mit Gartentor vor einem Vorgarten"
+    },
+    {
+      "name": "sichtschutz",
+      "ratio": "4:3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142355_79c28c48-8f59-4019-b29c-5fe66c48bc11.png",
+      "motiv": "Hoher Sichtschutz aus waagrechten Lamellen an einem Gartensitzplatz"
+    },
+    {
+      "name": "industriezaun",
+      "ratio": "4:3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142529_5510fe2b-71a1-4286-925c-2649dce73208.png",
+      "motiv": "Doppelstabmattenzaun entlang eines Gewerbeareals"
+    },
+    {
+      "name": "tor",
+      "ratio": "4:3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142541_11b27f90-8293-4b3f-99f3-5a99b86d46de.png",
+      "motiv": "Anthrazitfarbenes Schiebetor an einer Einfahrt, halb geöffnet"
+    },
+    {
+      "name": "werkstatt",
+      "ratio": "4:3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142545_444ba3ae-9d9a-48e7-9491-82d5e89572e9.png",
+      "motiv": "Rohrrahmentür auf dem Schweisstisch in der Werkstatt"
+    },
+    {
+      "name": "montage",
+      "ratio": "4:3",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142558_53dadf36-37a4-47c6-b1f9-d23407631592.png",
+      "motiv": "Hände richten mit der Wasserwaage einen frisch gesetzten Zaunpfosten aus"
+    }
+  ]
+}

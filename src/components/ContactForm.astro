@@ -1,0 +1,218 @@
+---
+import Icon from './Icon.astro';
+
+/**
+ * Offertformular.
+ *
+ * Ausgelegt auf Netlify Forms: das Attribut data-netlify und das versteckte
+ * Feld form-name genügen, damit Einsendungen ohne eigenen Server ankommen. Wer
+ * einen anderen Dienst einsetzt, ändert nur das action-Attribut.
+ *
+ * Ohne JavaScript wird das Formular ganz normal abgeschickt. Mit JavaScript
+ * kommt eine Prüfung vor dem Absenden dazu, deren Meldungen über
+ * aria-describedby am jeweiligen Feld hängen und in einer Live-Region
+ * angesagt werden.
+ */
+const fieldBase =
+  'w-full rounded-xl border border-grey-300 bg-white px-4 py-3 text-ink ' +
+  'transition-colors duration-200 placeholder:text-grey-400 ' +
+  'hover:border-grey-400 focus:border-brand-600 focus:outline-none ' +
+  'focus-visible:ring-2 focus-visible:ring-brand-600/40 ' +
+  'aria-[invalid=true]:border-danger';
+
+const labelBase = 'block text-sm font-medium text-grey-700';
+
+const anliegen = [
+  'Neuer Zaun',
+  'Sichtschutz',
+  'Tor oder Türe',
+  'Reparatur',
+  'Schlosserarbeit',
+  'Etwas anderes',
+];
+---
+
+<form
+  id="offerte"
+  name="offerte"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="firma"
+  class="space-y-6"
+  novalidate
+>
+  <input type="hidden" name="form-name" value="offerte" />
+
+  <!-- Honigtopf gegen automatisierte Einsendungen. Für Menschen unsichtbar,
+       für Screenreader ausgenommen. -->
+  <p class="hidden" aria-hidden="true">
+    <label>
+      Bitte leer lassen
+      <input type="text" name="firma" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+
+  <div class="grid gap-6 sm:grid-cols-2">
+    <div>
+      <label for="name" class={labelBase}>Name <span aria-hidden="true">*</span></label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        required
+        autocomplete="name"
+        class={`mt-2 ${fieldBase}`}
+        aria-describedby="name-fehler"
+      />
+      <p id="name-fehler" class="mt-1.5 hidden text-sm text-danger"></p>
+    </div>
+
+    <div>
+      <label for="telefon" class={labelBase}>Telefon</label>
+      <input
+        id="telefon"
+        name="telefon"
+        type="tel"
+        autocomplete="tel"
+        class={`mt-2 ${fieldBase}`}
+      />
+    </div>
+
+    <div>
+      <label for="mail" class={labelBase}>Mailadresse <span aria-hidden="true">*</span></label>
+      <input
+        id="mail"
+        name="mail"
+        type="email"
+        required
+        autocomplete="email"
+        class={`mt-2 ${fieldBase}`}
+        aria-describedby="mail-fehler"
+      />
+      <p id="mail-fehler" class="mt-1.5 hidden text-sm text-danger"></p>
+    </div>
+
+    <div>
+      <label for="ort" class={labelBase}>Postleitzahl und Ort</label>
+      <input
+        id="ort"
+        name="ort"
+        type="text"
+        autocomplete="postal-code"
+        class={`mt-2 ${fieldBase}`}
+      />
+    </div>
+  </div>
+
+  <div>
+    <label for="anliegen" class={labelBase}>Worum geht es?</label>
+    <select id="anliegen" name="anliegen" class={`mt-2 ${fieldBase}`}>
+      {anliegen.map((option) => <option value={option}>{option}</option>)}
+    </select>
+  </div>
+
+  <div>
+    <label for="nachricht" class={labelBase}>
+      Ihre Nachricht <span aria-hidden="true">*</span>
+    </label>
+    <textarea
+      id="nachricht"
+      name="nachricht"
+      rows="6"
+      required
+      class={`mt-2 ${fieldBase} resize-y`}
+      placeholder="Länge des Zauns, gewünschte Höhe, Material, Zeitrahmen. Was Sie schon wissen, hilft uns bei der Einschätzung."
+      aria-describedby="nachricht-fehler"></textarea>
+    <p id="nachricht-fehler" class="mt-1.5 hidden text-sm text-danger"></p>
+  </div>
+
+  <p class="text-sm leading-relaxed text-grey-600">
+    Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage
+    verwendet. Näheres steht in der <a
+      href="/datenschutz/"
+      class="link-underline font-medium text-brand-800">Datenschutzerklärung</a
+    >.
+  </p>
+
+  <div class="flex flex-wrap items-center gap-5">
+    <button
+      type="submit"
+      class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-800 px-7 py-3.5 font-medium text-white transition-colors duration-200 hover:bg-brand-900"
+    >
+      Anfrage senden
+      <Icon
+        name="arrow"
+        size={18}
+        class="transition-transform duration-200 group-hover:translate-x-0.5"
+      />
+    </button>
+
+    <p
+      id="formular-status"
+      role="status"
+      aria-live="polite"
+      class="text-sm font-medium text-success"
+    >
+    </p>
+  </div>
+</form>
+
+<script>
+  const setupForm = () => {
+    const form = document.querySelector<HTMLFormElement>('#offerte');
+    if (!form) return;
+
+    const status = form.querySelector<HTMLElement>('#formular-status');
+
+    const meldungen: Record<string, string> = {
+      name: 'Bitte tragen Sie Ihren Namen ein.',
+      mail: 'Bitte tragen Sie eine gültige Mailadresse ein.',
+      nachricht: 'Bitte beschreiben Sie kurz Ihr Anliegen.',
+    };
+
+    const zeigeFehler = (feld: HTMLInputElement | HTMLTextAreaElement) => {
+      const ziel = document.getElementById(`${feld.name}-fehler`);
+      const ungueltig = !feld.checkValidity();
+
+      feld.setAttribute('aria-invalid', String(ungueltig));
+
+      if (ziel) {
+        ziel.textContent = ungueltig ? (meldungen[feld.name] ?? 'Bitte prüfen.') : '';
+        ziel.classList.toggle('hidden', !ungueltig);
+      }
+
+      return !ungueltig;
+    };
+
+    const pflichtfelder = () =>
+      Array.from(
+        form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]'),
+      );
+
+    /* Erst nach dem Verlassen eines Feldes prüfen. Wer noch tippt, soll nicht
+       schon währenddessen eine Fehlermeldung sehen. */
+    pflichtfelder().forEach((feld) => {
+      feld.addEventListener('blur', () => zeigeFehler(feld));
+      feld.addEventListener('input', () => {
+        if (feld.getAttribute('aria-invalid') === 'true') zeigeFehler(feld);
+      });
+    });
+
+    form.addEventListener('submit', (event) => {
+      const felder = pflichtfelder();
+      const alleGueltig = felder.map(zeigeFehler).every(Boolean);
+
+      if (!alleGueltig) {
+        event.preventDefault();
+        if (status) {
+          status.className = 'text-sm font-medium text-danger';
+          status.textContent = 'Bitte ergänzen Sie die markierten Felder.';
+        }
+        felder.find((feld) => feld.getAttribute('aria-invalid') === 'true')?.focus();
+      }
+    });
+  };
+
+  setupForm();
+  document.addEventListener('astro:after-swap', setupForm);
+</script>

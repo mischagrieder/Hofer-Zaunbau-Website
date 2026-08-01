@@ -1,0 +1,85 @@
+---
+/**
+ * Eigenes Icon-Set als Inline-SVG.
+ *
+ * Bewusst keine Icon-Bibliothek: acht Fach-Icons und neun Oberflächen-Icons
+ * rechtfertigen keine externe Abhängigkeit. Inline gerendert entfällt jeder
+ * zusätzliche Netzwerkabruf, und die Icons erben Farbe und Strichstärke vom
+ * umgebenden Text. Einheitlich auf 24er Raster, Strichstärke 1.5, runde Enden.
+ */
+export type IconKey =
+  | 'fence'
+  | 'gate'
+  | 'compass'
+  | 'guide'
+  | 'wrench'
+  | 'repair'
+  | 'offer'
+  | 'spark'
+  | 'phone'
+  | 'mail'
+  | 'pin'
+  | 'arrow'
+  | 'menu'
+  | 'close'
+  | 'chevron'
+  | 'check'
+  | 'clock';
+
+interface Props {
+  name: IconKey;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 24, class: className = '' } = Astro.props;
+
+const paths: Record<IconKey, string> = {
+  // Zaunfeld mit drei Pfosten und zwei Querriegeln
+  fence: '<path d="M4 21V6l2-3 2 3v15M12 21V6l2-3 2 3v15M20 21V6M3 11h18M3 16h18"/>',
+  // Torflügel mit Mittelspalt
+  gate: '<path d="M3 21V8l4-3 4 3v13M13 21V8l4-3 4 3v13M3 13h8M13 13h8M11 21V8M13 21V8"/>',
+  // Kompass für Beratung vor Ort
+  compass: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.1 5-5 2.1 2.1-5z"/>',
+  // Aufgeschlagene Anleitung
+  guide: '<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H5.5A1.5 1.5 0 0 1 4 16.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h4.5a1.5 1.5 0 0 0 1.5-1.5z"/>',
+  // Schraubenschlüssel
+  wrench:
+    '<path d="M15.2 4.3a5 5 0 0 0-6.4 6.4L3.6 15.9a2 2 0 0 0 2.8 2.8l5.2-5.2a5 5 0 0 0 6.4-6.4L15.5 9.6l-2.6-.7-.7-2.6z"/>',
+  // Werkzeug über Zaunfeld: Reparatur
+  repair:
+    '<path d="M5 20V9l3-2.5L11 9v11M15 20v-7l2.5-2 2.5 2v7M3 20h18M5 13h6"/><path d="m14.5 4.5 2 2 2.5-2.5-2-2z"/>',
+  // Dokument mit Preiszeile
+  offer:
+    '<path d="M6 3h8l4 4v14H6zM14 3v4h4"/><path d="M9 13h6M9 17h4"/>',
+  // Funke: Schlosserarbeit
+  spark:
+    '<path d="M12 2v5M12 17v5M4.9 4.9 8.5 8.5M15.5 15.5l3.6 3.6M2 12h5M17 12h5M4.9 19.1l3.6-3.6M15.5 8.5l3.6-3.6"/>',
+  phone:
+    '<path d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3z"/>',
+  mail: '<path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/><path d="m3.5 7 8.5 6 8.5-6"/>',
+  pin: '<path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>',
+  arrow: '<path d="M4 12h15M13 6l6 6-6 6"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+  close: '<path d="m6 6 12 12M18 6 6 18"/>',
+  chevron: '<path d="m6 9 6 6 6-6"/>',
+  check: '<path d="m4 12.5 5 5 11-11"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/>',
+};
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+  class={className}
+  set:html={paths[name]}
+/>

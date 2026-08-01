@@ -1,0 +1,17 @@
+---
+/**
+ * Kleine Überzeile über einer Überschrift. Die Messinglinie davor ersetzt die
+ * sonst übliche farbige Schrift, die auf hellem Grund zu kontrastarm wäre.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<p
+  class={`flex items-center gap-3 text-eyebrow font-medium uppercase tracking-[0.14em] text-grey-600 ${className}`}
+>
+  <span aria-hidden="true" class="h-px w-8 shrink-0 bg-brand-600"></span>
+  <slot />
+</p>

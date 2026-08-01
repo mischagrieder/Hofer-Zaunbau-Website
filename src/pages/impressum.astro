@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout
+  title="Impressum"
+  description="Impressum und Anbieterkennzeichnung der HOFER Zaunbau, Rothrist."
+>
+  <PageHeader eyebrow="Rechtliches" title="Impressum" />
+
+  <Section>
+    <div class="container-page measure space-y-10">
+      <div
+        class="rounded-panel border border-brand-200 bg-brand-50 p-6 text-[0.9375rem] leading-relaxed"
+      >
+        <p class="font-medium text-brand-900">Vor der Veröffentlichung zu ergänzen</p>
+        <p class="mt-2 text-grey-700">
+          Die unten mit eckigen Klammern markierten Angaben liessen sich nicht
+          aus öffentlichen Quellen belegen und wurden bewusst nicht erfunden.
+          Bitte vor dem Aufschalten durch die Inhaberschaft ergänzen oder
+          streichen. Dieser Hinweiskasten kann danach entfernt werden.
+        </p>
+      </div>
+
+      <section>
+        <h2 class="font-display text-h3">Verantwortlich für den Inhalt</h2>
+        <address class="mt-4 space-y-1 not-italic text-grey-700">
+          <p class="font-medium text-ink">{site.legalName}</p>
+          <p>{site.owner}</p>
+          <p>{site.office.street}</p>
+          <p>{site.office.postalCode} {site.office.city}</p>
+          <p>{site.office.country}</p>
+        </address>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Kontakt</h2>
+        <ul class="mt-4 space-y-1 text-grey-700">
+          <li>
+            Telefon: <a href={site.phone.href} class="link-underline text-brand-800"
+              >{site.phone.display}</a
+            >
+          </li>
+          <li>
+            Mail: <a href={`mailto:${site.email}`} class="link-underline text-brand-800"
+              >{site.email}</a
+            >
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Unternehmensangaben</h2>
+        <ul class="mt-4 space-y-1 text-grey-700">
+          <li>Rechtsform: [Rechtsform ergänzen]</li>
+          <li>Unternehmensidentifikationsnummer: [UID ergänzen, Format CHE 123.456.789]</li>
+          <li>Mehrwertsteuernummer: [falls vorhanden ergänzen]</li>
+          <li>Gegründet: {site.foundedYear}</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Haftung für Inhalte</h2>
+        <p class="mt-4 text-grey-700">
+          Die Inhalte dieser Website wurden mit Sorgfalt erstellt. Für
+          Richtigkeit, Vollständigkeit und Aktualität wird keine Gewähr
+          übernommen. Angaben zu Produkten, Materialien und Fristen sind
+          unverbindlich und ersetzen keine Beratung im Einzelfall.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Haftung für Links</h2>
+        <p class="mt-4 text-grey-700">
+          Für Inhalte externer Websites, auf die verwiesen wird, ist
+          ausschliesslich deren Betreiberschaft verantwortlich. Zum Zeitpunkt
+          der Verlinkung waren keine Rechtsverstösse erkennbar.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-h3">Urheberrecht</h2>
+        <p class="mt-4 text-grey-700">
+          Texte, Gestaltung und Bildmaterial dieser Website sind urheberrechtlich
+          geschützt. Eine Weiterverwendung bedarf der schriftlichen Zustimmung.
+          Die gezeigten Aufnahmen sind digital erzeugte Beispielbilder und
+          dokumentieren keine konkret ausgeführten Aufträge.
+        </p>
+      </section>
+    </div>
+  </Section>
+</BaseLayout>
