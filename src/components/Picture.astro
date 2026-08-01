@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+import { image } from '../lib/images';
+import remote from '../data/remote-images.json';
+
+/**
+ * Einziger Bildbaustein der Website.
+ *
+ * Liegt das Motiv als echte Datei in src/assets/images, übernimmt Astro die
+ * Aufbereitung: AVIF und WebP in mehreren Breiten, passendes srcset.
+ *
+ * Konnte die Bildpipeline eine Datei nicht beschaffen und hat nur einen
+ * Platzhalter angelegt, wird stattdessen die Quelladresse eingebunden. Damit
+ * sehen Besucher das echte Motiv, auch wenn die Datei hier noch fehlt.
+ * scripts/prepare-images.mjs pflegt diese Liste bei jedem Lauf neu, das
+ * Umschalten passiert also von selbst, sobald die Datei vorliegt.
+ */
+interface Props {
+  name: string;
+  alt: string;
+  widths: number[];
+  sizes: string;
+  eager?: boolean;
+  class?: string;
+}
+
+const { name, alt, widths, sizes, eager = false, class: className = '' } = Astro.props;
+
+const fallback = (remote as Record<string, { url: string; width: number; height: number }>)[
+  name
+];
+
+const loading = eager ? 'eager' : 'lazy';
+---
+
+{
+  fallback ? (
+    <img
+      src={fallback.url}
+      alt={alt}
+      width={fallback.width}
+      height={fallback.height}
+      loading={loading}
+      decoding={eager ? 'sync' : 'async'}
+      fetchpriority={eager ? 'high' : undefined}
+      class={className}
+    />
+  ) : (
+    <Image
+      src={image(name)}
+      alt={alt}
+      widths={widths}
+      sizes={sizes}
+      loading={loading}
+      fetchpriority={eager ? 'high' : undefined}
+      class={className}
+    />
+  )
+}

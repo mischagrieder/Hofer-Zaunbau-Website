@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_191840_3d5c9b4d-8f64-4900-acbd-88c585962444.png",
+    "width": 2400,
+    "height": 1029
+  },
+  "metallzaun": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_101748_d76521d2-977d-4896-a9c9-f29ef94a84a8.png",
+    "width": 1600,
+    "height": 1200
+  },
+  "holzzaun": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_102208_ddeed184-6e2d-44cf-820e-795c79bc1429.png",
+    "width": 1600,
+    "height": 1200
+  },
+  "kunststoffzaun": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142916_59e24887-69c0-43be-9b41-8f42183e431d.png",
+    "width": 1600,
+    "height": 1200
+  },
+  "sichtschutz": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142355_79c28c48-8f59-4019-b29c-5fe66c48bc11.png",
+    "width": 1600,
+    "height": 1200
+  },
+  "industriezaun": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142529_5510fe2b-71a1-4286-925c-2649dce73208.png",
+    "width": 1600,
+    "height": 1200
+  },
+  "tor": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142541_11b27f90-8293-4b3f-99f3-5a99b86d46de.png",
+    "width": 1600,
+    "height": 1200
+  },
+  "werkstatt": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142545_444ba3ae-9d9a-48e7-9491-82d5e89572e9.png",
+    "width": 1600,
+    "height": 1200
+  },
+  "montage": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_142558_53dadf36-37a4-47c6-b1f9-d23407631592.png",
+    "width": 1600,
+    "height": 1200
+  },
+  "gefaelle": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_143243_6c9ce52b-ff2a-461c-ac9d-5d14d0b7fc53.png",
+    "width": 1600,
+    "height": 1200
+  },
+  "heromontage": {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FuPVC4JIayU3rXUwYAnv5ZoEBp/hf_20260801_191838_e8e72473-f258-4162-af55-a7155dcd2094.png",
+    "width": 1920,
+    "height": 1080
+  }
+}

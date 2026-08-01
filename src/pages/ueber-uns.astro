@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Eyebrow from '../components/Eyebrow.astro';
@@ -7,8 +6,8 @@ import Icon from '../components/Icon.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Reveal from '../components/Reveal.astro';
 import Section from '../components/Section.astro';
+import Picture from '../components/Picture.astro';
 import { areaServed, site } from '../data/site';
-import { image } from '../lib/images';
 
 const werte = [
   {
@@ -48,12 +47,12 @@ const werte = [
     <div class="container-page grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
       <Reveal class="lg:col-span-6">
         <div class="overflow-hidden rounded-panel bg-grey-200">
-          <Image
-            src={image('werkstatt')}
+          <Picture
+            name="werkstatt"
             alt="Aufgeräumte Metallwerkstatt mit einer Rohrrahmentür auf dem Schweisstisch"
             widths={[560, 840, 1200]}
             sizes="(min-width: 1024px) 48vw, 92vw"
-            loading="eager"
+            eager
             class="aspect-4/3 w-full object-cover"
           />
         </div>

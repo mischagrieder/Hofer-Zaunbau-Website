@@ -1,8 +1,7 @@
 ---
-import { Image } from 'astro:assets';
 import type { Product } from '../data/site';
-import { image } from '../lib/images';
 import Icon from './Icon.astro';
+import Picture from './Picture.astro';
 
 interface Props {
   product: Product;
@@ -13,12 +12,12 @@ const { product, eager = false } = Astro.props;
 
 <article id={product.slug} class="group scroll-mt-32">
   <div class="overflow-hidden rounded-panel bg-grey-200">
-    <Image
-      src={image(product.image)}
+    <Picture
+      name={product.image}
       alt={product.alt}
       widths={[400, 640, 900]}
       sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw"
-      loading={eager ? 'eager' : 'lazy'}
+      eager={eager}
       class="aspect-4/3 w-full object-cover transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
     />
   </div>

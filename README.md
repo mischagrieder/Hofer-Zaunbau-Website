@@ -64,15 +64,32 @@ Die Motive sind digital erzeugte Beispielbilder, keine dokumentierten Aufträge.
 Darauf wird im Fussbereich und auf der Referenzseite ausdrücklich hingewiesen.
 Herkunft und Quelladresse jedes Motivs stehen in `scripts/images.manifest.json`.
 
-`npm run images` lädt die Motive nach `src/assets/images`. Ist eine Quelle nicht
-erreichbar, legt das Skript stattdessen einen Platzhalter im richtigen
-Seitenverhältnis an, damit Build und Layout trotzdem stimmen. Sobald die Quelle
-erreichbar ist:
+`npm run images` lädt die Motive nach `src/assets/images`.
+
+Ist eine Quelle beim Bauen nicht erreichbar, greifen zwei Vorkehrungen
+ineinander, damit die Website trotzdem vollständig aussieht:
+
+1. Das Skript legt einen Platzhalter im richtigen Seitenverhältnis an, damit
+   der Build durchläuft und die Proportionen stimmen.
+2. Es vermerkt das Motiv in `src/data/remote-images.json`. Für genau diese
+   Motive bindet `src/components/Picture.astro` die Quelladresse direkt ein.
+   Besucher sehen dadurch das echte Bild, obwohl die Datei lokal fehlt.
+
+Sobald die Quelle erreichbar ist:
 
 ```bash
 npm run images -- --force
 npm run build
 ```
+
+Das Skript schreibt `remote-images.json` bei jedem Lauf neu. Sind alle Motive
+lokal vorhanden, ist die Datei leer und jedes Bild läuft wieder über die
+Aufbereitung von Astro mit AVIF, WebP und mehreren Breiten. Der Umstieg
+passiert von selbst, am Code ist nichts zu ändern.
+
+Solange Motive über die Quelladresse laufen, gilt: keine Bildoptimierung durch
+Astro und eine Abhängigkeit von einem fremden Server. Das ist als Übergang
+gedacht, nicht als Dauerzustand.
 
 Sollen später echte Baustellenfotos verwendet werden, genügt es, die Dateien
 unter demselben Namen in `src/assets/images` abzulegen. Astro erzeugt daraus

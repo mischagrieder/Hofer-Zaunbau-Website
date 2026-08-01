@@ -48,12 +48,22 @@ const placeholder = (width, height, label) => {
   return sharp(Buffer.from(svg)).jpeg({ quality: 82, mozjpeg: true }).toBuffer();
 };
 
+const remoteFile = join(root, 'src/data/remote-images.json');
+
 const exists = async (path) => {
   try {
     await access(path);
     return true;
   } catch {
     return false;
+  }
+};
+
+const readJson = async (path) => {
+  try {
+    return JSON.parse(await readFile(path, 'utf8'));
+  } catch {
+    return {};
   }
 };
 
@@ -66,12 +76,24 @@ const run = async () => {
   let placeheld = 0;
   let kept = 0;
 
+  /**
+   * Motive, für die nur ein Platzhalter vorliegt, samt ihrer Quelladresse.
+   * Die Website greift für genau diese auf die Quelle zurück, siehe
+   * src/components/Picture.astro. Motive mit echter Datei stehen hier nicht
+   * drin und werden ganz normal von Astro optimiert.
+   */
+  const remote = {};
+
   for (const image of manifest.images) {
     const target = join(outDir, `${image.name}.jpg`);
     const [width, height] = RATIOS[image.ratio] ?? RATIOS['4:3'];
 
     if (!force && (await exists(target))) {
       kept += 1;
+      // Beim erneuten Lauf ohne --force ist unbekannt, ob die vorhandene Datei
+      // echt oder ein Platzhalter ist. Die Marke aus dem letzten Lauf gilt weiter.
+      const previous = await readJson(remoteFile);
+      if (previous[image.name]) remote[image.name] = previous[image.name];
       continue;
     }
 
@@ -89,16 +111,20 @@ const run = async () => {
       fetched += 1;
     } catch (error) {
       await writeFile(target, await placeholder(width, height, image.name.toUpperCase()));
+      remote[image.name] = { url: image.url, width, height };
       console.log(`  Platzhalter ${image.name}.jpg  (${error.message})`);
       placeheld += 1;
     }
   }
 
+  await writeFile(remoteFile, `${JSON.stringify(remote, null, 2)}\n`);
+
   console.log(
     `\n${fetched} geladen, ${placeheld} als Platzhalter, ${kept} unverändert.` +
-      (placeheld > 0
-        ? '\nHinweis: Sobald die Bildquelle erreichbar ist, "npm run images -- --force" erneut ausführen.'
-        : ''),
+      (Object.keys(remote).length > 0
+        ? `\n${Object.keys(remote).length} Motive werden vorerst direkt von der Quelle geladen.` +
+          '\nSobald die Quelle hier erreichbar ist: "npm run images -- --force" erneut ausführen.'
+        : '\nAlle Motive liegen lokal vor und werden von Astro optimiert.'),
   );
 };
 
