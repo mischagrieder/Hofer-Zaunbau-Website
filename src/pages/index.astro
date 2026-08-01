@@ -15,12 +15,6 @@ const featured = products.filter((product) =>
   ['metallzaeune', 'holzzaeune', 'sichtschutz'].includes(product.slug),
 );
 
-const promises = [
-  'Beratung und Aufmass bei Ihnen vor Ort',
-  'Eigene Werkstatt für Sonderteile',
-  'Montage oder Anleitung zur Selbstmontage',
-];
-
 const galleryPreview = ['tor', 'industriezaun', 'montage'] as const;
 const galleryAlt: Record<(typeof galleryPreview)[number], string> = {
   tor: 'Anthrazitfarbenes Schiebetor an einer Einfahrt, halb geöffnet',
@@ -92,21 +86,6 @@ const galleryAlt: Record<(typeof galleryPreview)[number], string> = {
       </div>
     </div>
   </section>
-
-  <!-- Schmales Band unter dem Aufmacher. Trägt die Zusagen, die vorher im
-       Aufmacher standen, und hält diesen dadurch frei von Beiwerk. -->
-  <div class="border-b border-grey-200 bg-white">
-    <ul class="container-page grid gap-x-10 gap-y-5 py-8 sm:grid-cols-3">
-      {
-        promises.map((promise) => (
-          <li class="flex items-start gap-3 text-[0.9375rem] text-grey-700">
-            <Icon name="check" size={18} class="mt-0.5 shrink-0 text-brand-800" />
-            <span>{promise}</span>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
 
   <!-- Leistungen -->
   <Section labelledby="leistungen-titel" tone="white">
