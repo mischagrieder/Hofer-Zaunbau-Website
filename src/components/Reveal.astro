@@ -8,13 +8,17 @@
  * Fällt JavaScript ganz aus, macht das Skript in BaseLayout alle Elemente
  * sichtbar, damit nie Inhalt verborgen bleibt.
  */
+/* astro check meldet Props hier als ungenutzt. Das ist ein Fehlalarm: Astro
+   leitet aus dieser Schnittstelle die erlaubten Attribute der Komponente ab.
+   Ein Umschreiben auf "Astro.props as Props" behebt den Hinweis, nimmt Astro
+   aber die Ableitung und erzeugt Fehler an jeder Verwendungsstelle. */
 interface Props {
   delay?: number;
   as?: 'div' | 'li' | 'article' | 'section';
   class?: string;
 }
 
-const { delay = 0, as: Tag = 'div', class: className = '' } = Astro.props as Props;
+const { delay = 0, as: Tag = 'div', class: className = '' } = Astro.props;
 ---
 
 <Tag data-reveal class={className} style={delay ? `--reveal-delay:${delay}ms` : undefined}>

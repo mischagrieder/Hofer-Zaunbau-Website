@@ -392,4 +392,11 @@ export const references: readonly Reference[] = [
     category: 'Werkstatt',
     alt: 'Hände richten mit der Wasserwaage einen frisch gesetzten Zaunpfosten aus',
   },
+  {
+    image: 'gefaelle',
+    title: 'Zaunlinie über Gefälle',
+    place: 'Hanggrundstück',
+    category: 'Metall',
+    alt: 'Metallzaun folgt einem Gefälle, jedes Feld exakt zur Neigung abgestuft',
+  },
 ];
