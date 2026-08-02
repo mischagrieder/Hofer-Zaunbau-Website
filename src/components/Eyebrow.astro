@@ -1,17 +1,28 @@
 ---
 /**
- * Kleine Überzeile über einer Überschrift. Die Messinglinie davor ersetzt die
- * sonst übliche farbige Schrift, die auf hellem Grund zu kontrastarm wäre.
+ * Kleine Überzeile über einer Überschrift.
+ *
+ * Als Marke steht ein gekipptes Quadrat davor, kein Strich. Es greift die
+ * geometrische Formensprache der Seite auf und lässt sich nicht als
+ * Bindestrich lesen.
  */
 interface Props {
+  tone?: 'light' | 'dark';
   class?: string;
 }
-const { class: className = '' } = Astro.props;
+const { tone = 'light', class: className = '' } = Astro.props;
+
+const tones = {
+  light: 'text-brand-700',
+  dark: 'text-brand-200',
+} as const;
 ---
 
 <p
-  class={`flex items-center gap-3 text-eyebrow font-medium uppercase tracking-[0.14em] text-grey-600 ${className}`}
+  class={`flex items-center gap-2.5 text-eyebrow font-semibold uppercase tracking-[0.14em] ${tones[tone]} ${className}`}
 >
-  <span aria-hidden="true" class="h-px w-8 shrink-0 bg-brand-600"></span>
+  <span
+    aria-hidden="true"
+    class="h-1.5 w-1.5 shrink-0 rotate-45 bg-current"></span>
   <slot />
 </p>

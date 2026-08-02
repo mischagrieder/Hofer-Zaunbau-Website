@@ -109,11 +109,15 @@
   --spacing-section: clamp(5rem, 3rem + 8vw, 9rem);
   --spacing-gutter: clamp(1.25rem, 0.5rem + 2.5vw, 2.5rem);
 
-  --radius-card: 0.75rem;
-  --radius-panel: 1.25rem;
+  --radius-card: 1rem;
+  --radius-panel: 1.5rem;
+  --radius-hero: 2rem;
 
-  --shadow-raise: 0 1px 2px rgb(20 23 26 / 0.04), 0 8px 24px -12px rgb(20 23 26 / 0.14);
-  --shadow-float: 0 2px 4px rgb(20 23 26 / 0.05), 0 20px 48px -20px rgb(20 23 26 / 0.22);
+  /* Schatten in der Markenfarbe statt in Neutralgrau. Auf den blaustichigen
+     Flächen wirkt ein grauer Schatten schmutzig, ein blauer bleibt sauber. */
+  --shadow-raise: 0 1px 2px rgb(15 47 82 / 0.05), 0 8px 24px -12px rgb(15 47 82 / 0.18);
+  --shadow-card: 0 1px 2px rgb(15 47 82 / 0.04), 0 12px 32px -16px rgb(15 47 82 / 0.22);
+  --shadow-float: 0 2px 4px rgb(15 47 82 / 0.06), 0 24px 56px -24px rgb(15 47 82 / 0.3);
 
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -136,6 +140,11 @@
     /* Verhindert, dass Sprungziele unter dem fixierten Kopfbereich landen. */
     scroll-padding-top: 6.5rem;
     -webkit-text-size-adjust: 100%;
+
+    /* Die Seite ist bewusst nur hell gestaltet. Die Angabe sorgt dafür, dass
+       auch native Bedienelemente wie Auswahlfelder hell dargestellt werden,
+       wenn das Betriebssystem auf dunkel steht. */
+    color-scheme: light;
 
     /* Silbentrennung vollständig aus. Deutsche Komposita sind lang, und eine
        automatische Trennung mitten im Wort zerschlägt sonst Überschriften. */
@@ -186,6 +195,17 @@
     outline: 2px solid var(--color-brand-600);
     outline-offset: 3px;
     border-radius: 2px;
+  }
+
+  /* Kein Verzögern von 300 ms beim Antippen und keine graue Blitzfläche.
+     Der eigene Hover- und Aktivzustand übernimmt die Rückmeldung. */
+  a,
+  button,
+  summary,
+  label,
+  [role='button'] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* Nur entfernen, wo ein eigener sichtbarer Fokusstil greift. */
@@ -259,6 +279,71 @@
   }
 
   /* -------------------------------------------------------------------------
+     Geometrische Flächen
+
+     Zieht eine ruhige Bauzeichnungsanmutung durch die Seite. Alle Muster sind
+     als Verlauf umgesetzt, also ohne zusätzliche Datei und ohne Abruf. Sie
+     liegen immer hinter dem Inhalt und sind für Hilfsmittel unsichtbar.
+  ------------------------------------------------------------------------- */
+
+  /* Feines Raster, Anlehnung an ein Zaunfeld. */
+  .pattern-grid {
+    background-image:
+      linear-gradient(to right, var(--color-brand-200) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-brand-200) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+  }
+
+  /* Senkrechte Striche, Anlehnung an Zaunstäbe. */
+  .pattern-bars {
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--color-brand-200) 0 1px,
+      transparent 1px 2.25rem
+    );
+  }
+
+  .pattern-bars-light {
+    background-image: repeating-linear-gradient(
+      to right,
+      rgb(255 255 255 / 0.14) 0 1px,
+      transparent 1px 2.25rem
+    );
+  }
+
+  /* Weicher Lichtschein, setzt dunkle Abschnitte vom Rand ab. */
+  .glow-brand {
+    background-image: radial-gradient(
+      60% 60% at 50% 0%,
+      var(--color-brand-700) 0%,
+      transparent 70%
+    );
+  }
+
+  /* Blendet ein Muster zum Rand hin aus, damit keine harte Kante entsteht. */
+  .fade-edges {
+    mask-image: radial-gradient(75% 75% at 50% 40%, black 30%, transparent 100%);
+  }
+
+  /* -------------------------------------------------------------------------
+     Karten
+  ------------------------------------------------------------------------- */
+
+  .card {
+    border-radius: var(--radius-panel);
+    background-color: white;
+    box-shadow: var(--shadow-card);
+    transition:
+      transform 0.35s var(--ease-out-expo),
+      box-shadow 0.35s var(--ease-out-expo);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-float);
+  }
+
+  /* -------------------------------------------------------------------------
      Wortmarke
      Alle Teile erben die Farbe vom Kopfbereich. Dadurch genügt eine einzige
      Regel, um die Marke über dem Aufmacherbild auf Weiss umzustellen.
@@ -293,9 +378,10 @@
    ihr Layer später kommt.
 --------------------------------------------------------------------------- */
 
-#site-header[data-overlay]:not([data-scrolled]) {
-  background-color: transparent;
-  backdrop-filter: none;
+#site-header[data-overlay]:not([data-scrolled]) .header-bar {
+  background-color: color-mix(in srgb, var(--color-brand-950) 55%, transparent);
+  border-color: color-mix(in srgb, white 18%, transparent);
+  box-shadow: none;
   color: white;
 }
 
@@ -312,13 +398,23 @@
   color: white;
 }
 
-#site-header[data-overlay]:not([data-scrolled]) .header-cta {
+/* Auf der dunklen Leiste kehrt sich der Anrufknopf um: weisse Fläche,
+   dunkler Text. Der Kontrast bleibt dadurch in beiden Zuständen hoch. */
+#site-header[data-overlay]:not([data-scrolled]) .header-phone {
+  background-color: white;
+  color: var(--color-brand-900);
+}
+
+#site-header[data-overlay]:not([data-scrolled]) .header-phone:hover {
+  background-color: var(--color-brand-50);
+}
+
+#site-header[data-overlay]:not([data-scrolled]) .header-toggle {
   border-color: color-mix(in srgb, white 40%, transparent);
   color: white;
 }
 
-#site-header[data-overlay]:not([data-scrolled]) .header-cta:hover {
-  border-color: white;
+#site-header[data-overlay]:not([data-scrolled]) .header-toggle:hover {
   background-color: color-mix(in srgb, white 14%, transparent);
 }
 

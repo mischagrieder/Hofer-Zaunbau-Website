@@ -400,3 +400,103 @@ export const references: readonly Reference[] = [
     alt: 'Metallzaun folgt einem Gefälle, jedes Feld exakt zur Neigung abgestuft',
   },
 ];
+
+export interface Project {
+  readonly image: string;
+  readonly title: string;
+  readonly place: string;
+  readonly scope: string;
+  readonly alt: string;
+}
+
+/**
+ * Abgeschlossene Ausführungen für die Startseite.
+ *
+ * Wie überall auf dieser Website sind die Aufnahmen digital erzeugte
+ * Beispielbilder. Sie zeigen typische Ausführungen und stehen nicht für
+ * konkret abgerechnete Aufträge. Sobald eigene Baustellenfotos vorliegen,
+ * werden hier nur Dateiname, Titel und Ort ausgetauscht.
+ */
+export const projects: readonly Project[] = [
+  {
+    image: 'tor',
+    title: 'Einfahrt mit Schiebetor',
+    place: 'Einfamilienhaus',
+    scope: 'Metallzaun, Schiebetor, Montage',
+    alt: 'Breites anthrazitfarbenes Schiebetor mit senkrechten Stäben an einer Einfahrt',
+  },
+  {
+    image: 'holzzaun',
+    title: 'Sitzplatz mit Holzzaun',
+    place: 'Gartenterrasse',
+    scope: 'Lärche waagrecht, rostfreie Befestigung',
+    alt: 'Waagrecht verlegter Lattenzaun aus Lärchenholz entlang einer Gartenterrasse',
+  },
+  {
+    image: 'industriezaun',
+    title: 'Areal mit Doppelstabmatten',
+    place: 'Gewerbe',
+    scope: 'Industriezaun, Tore, Abschrankung',
+    alt: 'Grün beschichteter Doppelstabmattenzaun entlang eines Gewerbeareals',
+  },
+  {
+    image: 'gefaelle',
+    title: 'Zaunlinie über Gefälle',
+    place: 'Hanggrundstück',
+    scope: 'Metallzaun, Felder einzeln abgestuft',
+    alt: 'Metallzaun folgt einem Gefälle, jedes Feld exakt zur Neigung abgestuft',
+  },
+  {
+    image: 'sichtschutz',
+    title: 'Blickdichter Sitzplatz',
+    place: 'Reihenhaus',
+    scope: 'Sichtschutz, Höhe nach Mass',
+    alt: 'Hoher Sichtschutz aus breiten waagrechten Lamellen an einem Gartensitzplatz',
+  },
+  {
+    image: 'kunststoffzaun',
+    title: 'Vorgarten mit Gartentor',
+    place: 'Vorgarten',
+    scope: 'Kunststoffzaun, Gartentor',
+    alt: 'Weisser Kunststoffzaun mit kleinem Gartentor vor einem gepflegten Vorgarten',
+  },
+];
+
+export interface Testimonial {
+  readonly quote: string;
+  readonly author: string;
+  readonly place: string;
+}
+
+/**
+ * TODO(verify): PLATZHALTER.
+ *
+ * Diese Stimmen sind erfunden und dürfen so nicht online gehen. Erfundene
+ * Kundenbewertungen sind irreführende Werbung und in der Schweiz nach dem
+ * Gesetz gegen den unlauteren Wettbewerb unzulässig.
+ *
+ * Sie stehen hier ausschliesslich, damit die Gestaltung des Abschnitts
+ * beurteilt werden kann. Vor dem Aufschalten entweder durch echte, freigegebene
+ * Kundenstimmen ersetzen oder das Feld auf eine leere Liste setzen. Bei einer
+ * leeren Liste blendet die Startseite den ganzen Abschnitt automatisch aus.
+ */
+export const testimonials: readonly Testimonial[] = [
+  {
+    quote:
+      'Termin eingehalten, sauber gearbeitet und am Schluss alles aufgeräumt hinterlassen. Die Offerte hat bis auf den Franken gestimmt.',
+    author: 'Platzhalter',
+    place: 'Bitte ersetzen',
+  },
+  {
+    quote:
+      'Wir wussten nicht, welches Material zu unserem Hang passt. Die Beratung vor Ort hat das in einer halben Stunde geklärt.',
+    author: 'Platzhalter',
+    place: 'Bitte ersetzen',
+  },
+  {
+    quote:
+      'Das Tor liess sich nach dem Sturm nicht mehr schliessen. Zwei Tage später war es gerichtet, ohne dass wir den ganzen Zaun ersetzen mussten.',
+    author: 'Platzhalter',
+    place: 'Bitte ersetzen',
+  },
+];

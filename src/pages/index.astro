@@ -2,25 +2,26 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Accordion from '../components/Accordion.astro';
 import Button from '../components/Button.astro';
-import CtaBand from '../components/CtaBand.astro';
+import ContactForm from '../components/ContactForm.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 import Icon from '../components/Icon.astro';
 import Picture from '../components/Picture.astro';
-import ProductCard from '../components/ProductCard.astro';
 import Reveal from '../components/Reveal.astro';
 import Section from '../components/Section.astro';
-import { faq, products, services, site, steps } from '../data/site';
+import {
+  areaServed,
+  faq,
+  projects,
+  services,
+  site,
+  steps,
+  testimonials,
+} from '../data/site';
 
-const featured = products.filter((product) =>
-  ['metallzaeune', 'holzzaeune', 'sichtschutz'].includes(product.slug),
+/** Vier Leistungen als Anreisser, der Rest liegt auf der eigenen Seite. */
+const featuredServices = services.filter((service) =>
+  ['beratung', 'lieferung', 'montage', 'reparaturen'].includes(service.slug),
 );
-
-const galleryPreview = ['tor', 'industriezaun', 'montage'] as const;
-const galleryAlt: Record<(typeof galleryPreview)[number], string> = {
-  tor: 'Anthrazitfarbenes Schiebetor an einer Einfahrt, halb geöffnet',
-  industriezaun: 'Doppelstabmattenzaun entlang eines Gewerbeareals',
-  montage: 'Hände richten mit der Wasserwaage einen frisch gesetzten Zaunpfosten aus',
-};
 ---
 
 <BaseLayout
@@ -29,253 +30,473 @@ const galleryAlt: Record<(typeof galleryPreview)[number], string> = {
   bareTitle
   heroOverlay
 >
-  <!-- Aufmacher: randloses Bild mit Text darüber.
-       Der Kontrast ist nicht dem Motiv überlassen: zwei Verläufe legen sich
-       fest berechnet über das Bild, oben für den Kopfbereich, unten für die
-       Schrift. Dadurch bleibt Weiss auf Blauschwarz auch dann sicher lesbar,
-       wenn das Motiv später gegen ein helleres getauscht wird. -->
-  <section class="relative flex min-h-[42rem] items-end overflow-hidden lg:min-h-[92svh]">
-    <Picture
-      name="hero"
-      alt="Lange anthrazitfarbene Zaunlinie in starker Fluchtperspektive neben einem modernen Schweizer Wohnhaus"
-      widths={[900, 1400, 1920, 2400]}
-      sizes="100vw"
-      eager
-      class="absolute inset-0 h-full w-full object-cover"
-    />
-
-    <div
-      aria-hidden="true"
-      class="absolute inset-0 bg-linear-to-t from-brand-950/92 via-brand-950/55 to-brand-950/25"
-    >
-    </div>
-    <div
-      aria-hidden="true"
-      class="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-brand-950/60 to-transparent"
-    >
-    </div>
-
-    <div class="relative container-page pt-36 pb-20 lg:pt-44 lg:pb-28">
-      <p
-        class="flex items-center gap-3 text-eyebrow font-medium tracking-[0.14em] text-white/75 uppercase"
+  <!-- ==================================================================
+       1. Aufmacher
+       Bild randlos im Hintergrund, darüber eine dunkle Tafel mit der
+       Botschaft und daneben eine Bildkarte. Die Schrift steht nie direkt
+       auf dem Foto, sondern immer auf einer eigenen Fläche. Dadurch ist
+       der Kontrast unabhängig vom Motiv gesichert.
+  =================================================================== -->
+  <section class="relative">
+    <div class="absolute inset-x-0 top-0 h-[34rem] overflow-hidden lg:h-[38rem]">
+      <Picture
+        name="hero"
+        alt="Lange anthrazitfarbene Zaunlinie in starker Fluchtperspektive neben einem modernen Schweizer Wohnhaus"
+        widths={[900, 1400, 1920, 2400]}
+        sizes="100vw"
+        eager
+        class="h-full w-full object-cover"
+      />
+      <div
+        aria-hidden="true"
+        class="absolute inset-0 bg-linear-to-b from-brand-950/70 via-brand-950/35 to-brand-950/10"
       >
-        <span aria-hidden="true" class="h-px w-8 shrink-0 bg-white/50"></span>
-        Zaunbau aus Rothrist, seit {site.foundedYear}
-      </p>
+      </div>
 
-      <h1 class="mt-8 max-w-[18ch] font-display text-display text-white">
-        Zäune, die Bestand haben.
-      </h1>
+      <!-- Löst die Unterkante des Bildes in die Seitenfläche auf, damit dort
+           keine harte waagrechte Kante quer über den Bildschirm läuft. -->
+      <div
+        aria-hidden="true"
+        class="absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-paper"
+      >
+      </div>
+    </div>
 
-      <p class="mt-8 max-w-xl text-lead text-white/80">
-        Geplant, gefertigt und montiert von einem Betrieb. Aus Metall, Holz oder
-        Kunststoff, exakt gesetzt und auf Jahrzehnte gedacht.
-      </p>
-
-      <div class="mt-11 flex flex-wrap items-center gap-4">
-        <Button href="/kontakt/" icon="arrow" variant="onDark">
-          Offerte anfragen
-        </Button>
-        <a
-          href={site.phone.href}
-          class="inline-flex items-center gap-2.5 rounded-full border border-white/35 px-7 py-3.5 font-medium text-white transition-colors duration-200 hover:border-white hover:bg-white/10"
+    <div class="relative container-page pt-[19rem] pb-(--spacing-section) lg:pt-[21rem]">
+      <!-- min-w-0 auf beiden Spalten: Rasterspalten haben von sich aus
+           min-width auto, dadurch könnte ein Bild die Spalte über die
+           Bildschirmbreite hinaus aufziehen. -->
+      <div class="grid gap-6 lg:grid-cols-12 lg:items-stretch">
+        <!-- Botschaftstafel -->
+        <div
+          class="relative min-w-0 overflow-hidden rounded-hero bg-brand-950 px-8 py-12 text-white sm:px-12 lg:col-span-7 lg:px-14 lg:py-16"
         >
-          <Icon name="phone" size={18} />
-          {site.phone.display}
-        </a>
+          <span
+            aria-hidden="true"
+            class="pattern-bars-light fade-edges absolute inset-0 opacity-70"></span>
+
+          <div class="relative">
+            <Eyebrow tone="dark">Zaunbau aus Rothrist, seit {site.foundedYear}</Eyebrow>
+
+            <h1 class="mt-7 font-display text-display">
+              Ihr Zaun.<br />Unser Projekt.
+            </h1>
+
+            <p class="mt-7 max-w-lg text-lead text-brand-100">
+              Individuelle Zaunlösungen aus Metall, Holz und Kunststoff. Präzise
+              geplant, in der eigenen Werkstatt gefertigt und fachgerecht
+              montiert.
+            </p>
+
+            <div class="mt-10 flex flex-wrap items-center gap-3">
+              <Button href="#kontakt" icon="arrow" variant="onDark">
+                Offerte anfragen
+              </Button>
+              <a
+                href={site.phone.href}
+                class="inline-flex items-center gap-2.5 rounded-full border border-white/30 px-7 py-3.5 font-medium text-white transition-colors duration-200 hover:border-white hover:bg-white/10"
+              >
+                <Icon name="phone" size={18} />
+                {site.phone.display}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bildkarte mit Hinweisfeld -->
+        <div class="relative min-w-0 lg:col-span-5">
+          <div
+            class="aspect-4/3 overflow-hidden rounded-hero bg-brand-100 sm:aspect-16/9 lg:aspect-auto lg:h-full"
+          >
+            <Picture
+              name="heromontage"
+              alt="Zaunbauer richtet ein anthrazitfarbenes Zaunfeld auf einem Grundstück aus"
+              widths={[520, 780, 1100]}
+              sizes="(min-width: 1024px) 40vw, 92vw"
+              eager
+              class="h-full w-full object-cover"
+            />
+          </div>
+
+          <div
+            class="card absolute right-4 bottom-4 left-4 flex items-start gap-3.5 p-5 sm:left-auto sm:max-w-[19rem]"
+          >
+            <span
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-800"
+            >
+              <Icon name="compass" size={20} />
+            </span>
+            <p class="text-[0.9375rem] leading-relaxed text-grey-700">
+              <span class="block font-semibold text-ink">Beratung vor Ort</span>
+              Wir messen aus und klären Material, Höhe und Verlauf direkt bei Ihnen.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Leistungen -->
-  <Section labelledby="leistungen-titel" tone="white">
-    <div class="container-page">
-      <Reveal class="max-w-3xl">
-        <Eyebrow>Leistungen</Eyebrow>
-        <h2 id="leistungen-titel" class="mt-6 font-display text-h2">
-          Von der Beratung bis zum letzten Pfosten.
-        </h2>
-        <p class="measure mt-6 text-lead text-grey-700">
-          Alles aus einer Hand: Sie sprechen mit derselben Person, die später
-          auch auf der Baustelle steht.
-        </p>
+  <!-- ==================================================================
+       2. Leistungen
+  =================================================================== -->
+  <Section tone="tint" labelledby="leistungen-titel">
+    <span
+      aria-hidden="true"
+      class="pattern-grid fade-edges absolute inset-0 opacity-60"></span>
+
+    <div class="relative container-page">
+      <Reveal class="flex flex-wrap items-end justify-between gap-8">
+        <div class="max-w-2xl">
+          <Eyebrow>Leistungen</Eyebrow>
+          <h2 id="leistungen-titel" class="mt-6 font-display text-h2">
+            Von der Beratung bis zum letzten Pfosten.
+          </h2>
+          <p class="measure mt-6 text-lead text-grey-700">
+            Alles aus einer Hand. Sie sprechen mit derselben Person, die später
+            auch auf der Baustelle steht.
+          </p>
+        </div>
+        <Button href="/leistungen/" variant="secondary" icon="arrow">
+          Alle Leistungen
+        </Button>
       </Reveal>
 
-      <ul class="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+      <ul class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {
-          services.map((service, index) => (
+          featuredServices.map((service, index) => (
             <Reveal as="li" delay={(index % 4) * 70}>
-              <span class="flex h-12 w-12 items-center justify-center rounded-full bg-brand-50 text-brand-800">
-                <Icon name={service.icon} size={22} />
-              </span>
-              <h3 class="mt-5 font-display text-h3">{service.title}</h3>
-              <p class="mt-3 text-[0.9375rem] leading-relaxed text-grey-700">
-                {service.summary}
-              </p>
+              <article class="card card-hover flex h-full flex-col p-7">
+                <span class="flex h-12 w-12 items-center justify-center rounded-full bg-brand-800 text-white">
+                  <Icon name={service.icon} size={22} />
+                </span>
+                <h3 class="mt-6 font-display text-h3">{service.title}</h3>
+                <p class="mt-3 text-[0.9375rem] leading-relaxed text-grey-700">
+                  {service.summary}
+                </p>
+              </article>
             </Reveal>
           ))
         }
       </ul>
 
-      <Reveal class="mt-14">
-        <Button href="/leistungen/" variant="secondary" icon="arrow">
-          Alle Leistungen im Detail
-        </Button>
+      <!-- Ablauf als schmale Leiste, gibt der Sektion einen zweiten Rhythmus -->
+      <Reveal class="mt-8">
+        <ol
+          class="card grid divide-y divide-grey-200 p-2 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4"
+        >
+          {
+            steps.map((step, index) => (
+              <li class="flex items-start gap-4 p-5">
+                <span
+                  aria-hidden="true"
+                  class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 font-display text-sm font-bold text-brand-800"
+                >
+                  {index + 1}
+                </span>
+                <div>
+                  <h3 class="font-display text-[1.0625rem] font-semibold">
+                    {step.title}
+                  </h3>
+                  <p class="mt-1.5 text-sm leading-relaxed text-grey-600">{step.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
       </Reveal>
     </div>
   </Section>
 
-  <!-- Produkte -->
-  <Section labelledby="produkte-titel">
-    <div class="container-page">
+  <!-- ==================================================================
+       3. Ergebnisse
+  =================================================================== -->
+  <Section tone="deep" labelledby="projekte-titel">
+    <span aria-hidden="true" class="glow-brand absolute inset-0 opacity-40"></span>
+
+    <div class="relative container-page">
       <Reveal class="flex flex-wrap items-end justify-between gap-8">
         <div class="max-w-2xl">
-          <Eyebrow>Produkte</Eyebrow>
-          <h2 id="produkte-titel" class="mt-6 font-display text-h2">
-            Material, das zu Ihrem Grundstück passt.
+          <Eyebrow tone="dark">Ergebnisse</Eyebrow>
+          <h2 id="projekte-titel" class="mt-6 font-display text-h2">
+            Abgeschlossene Ausführungen.
           </h2>
+          <p class="measure mt-6 text-lead text-brand-100">
+            Vom Vorgarten über den Sitzplatz bis zum Gewerbeareal. Jede Linie
+            einzeln ausgerichtet, jedes Gefälle sauber abgestuft.
+          </p>
         </div>
-        <Button href="/produkte/" variant="secondary" icon="arrow">
-          Alle Produkte
-        </Button>
-      </Reveal>
-
-      <div class="mt-16 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          featured.map((product, index) => (
-            <Reveal delay={index * 90}>
-              <ProductCard product={product} />
-            </Reveal>
-          ))
-        }
-      </div>
-    </div>
-  </Section>
-
-  <!-- Ablauf -->
-  <Section labelledby="ablauf-titel" tone="white">
-    <div class="container-page">
-      <Reveal class="max-w-2xl">
-        <Eyebrow>Ablauf</Eyebrow>
-        <h2 id="ablauf-titel" class="mt-6 font-display text-h2">
-          In vier Schritten zum fertigen Zaun.
-        </h2>
-      </Reveal>
-
-      <ol class="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          steps.map((step, index) => (
-            <Reveal as="li" delay={index * 80} class="relative">
-              <span
-                aria-hidden="true"
-                class="font-display text-5xl font-semibold text-grey-300"
-              >
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <span
-                aria-hidden="true"
-                class="mt-5 block h-px w-full bg-grey-200"
-              />
-              <h3 class="mt-6 font-display text-h3">{step.title}</h3>
-              <p class="mt-3 text-[0.9375rem] leading-relaxed text-grey-700">
-                {step.text}
-              </p>
-            </Reveal>
-          ))
-        }
-      </ol>
-    </div>
-  </Section>
-
-  <!-- Referenzen -->
-  <Section labelledby="referenzen-titel">
-    <div class="container-page">
-      <Reveal class="flex flex-wrap items-end justify-between gap-8">
-        <div class="max-w-2xl">
-          <Eyebrow>Referenzen</Eyebrow>
-          <h2 id="referenzen-titel" class="mt-6 font-display text-h2">
-            Ein Blick auf unsere Arbeit.
-          </h2>
-        </div>
-        <Button href="/referenzen/" variant="secondary" icon="arrow">
+        <Button href="/referenzen/" icon="arrow" variant="onDark">
           Zur Galerie
         </Button>
       </Reveal>
 
-      <div class="mt-14 grid gap-4 sm:grid-cols-3">
+      <ul class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {
-          galleryPreview.map((name, index) => (
-            <Reveal delay={index * 90} class="overflow-hidden rounded-panel bg-grey-200">
-              <Picture
-                name={name}
-                alt={galleryAlt[name]}
-                widths={[400, 640, 900]}
-                sizes="(min-width: 640px) 31vw, 92vw"
-                class="aspect-4/5 w-full object-cover transition-transform duration-700 ease-[var(--ease-out-expo)] hover:scale-[1.04]"
-              />
+          projects.map((project, index) => (
+            <Reveal as="li" delay={(index % 3) * 80}>
+              <article class="group h-full overflow-hidden rounded-panel bg-brand-900 ring-1 ring-white/10">
+                <div class="overflow-hidden">
+                  <Picture
+                    name={project.image}
+                    alt={project.alt}
+                    widths={[400, 640, 900]}
+                    sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw"
+                    class="aspect-4/3 w-full object-cover transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
+                  />
+                </div>
+                <div class="p-6">
+                  <p class="text-xs tracking-[0.12em] text-brand-300 uppercase">
+                    {project.place}
+                  </p>
+                  <h3 class="mt-2 font-display text-h3 text-white">{project.title}</h3>
+                  <p class="mt-2.5 text-[0.9375rem] text-brand-100">{project.scope}</p>
+                </div>
+              </article>
             </Reveal>
           ))
         }
+      </ul>
+
+      <p class="mt-12 text-sm leading-relaxed text-brand-200">
+        Hinweis: Die gezeigten Aufnahmen sind digital erzeugte Beispielbilder für
+        typische Ausführungen.
+      </p>
+    </div>
+  </Section>
+
+  <!-- ==================================================================
+       4. Referenzen und Kundenstimmen
+       Der Abschnitt verschwindet vollständig, sobald die Liste in
+       data/site.ts leer ist. So lässt sich der Platzhalterinhalt mit einer
+       einzigen Änderung entfernen.
+  =================================================================== -->
+  {
+    testimonials.length > 0 && (
+      <Section tone="white" labelledby="stimmen-titel">
+        <div class="container-page">
+          <Reveal class="max-w-2xl">
+            <Eyebrow>Kundenstimmen</Eyebrow>
+            <h2 id="stimmen-titel" class="mt-6 font-display text-h2">
+              Was Kundinnen und Kunden sagen.
+            </h2>
+          </Reveal>
+
+          <ul class="mt-16 grid gap-6 lg:grid-cols-3">
+            {testimonials.map((item, index) => (
+              <Reveal as="li" delay={(index % 3) * 80}>
+                <figure class="card flex h-full flex-col justify-between border border-grey-200 p-8">
+                  <span
+                    aria-hidden="true"
+                    class="font-display text-5xl leading-none font-bold text-brand-200"
+                  >
+                    &bdquo;
+                  </span>
+                  <blockquote class="mt-4 grow text-[1.0625rem] leading-relaxed text-grey-800">
+                    {item.quote}
+                  </blockquote>
+                  <figcaption class="mt-7 flex items-center gap-3 border-t border-grey-200 pt-5">
+                    <span
+                      aria-hidden="true"
+                      class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-brand-800"
+                    >
+                      <Icon name="check" size={17} />
+                    </span>
+                    <span class="text-sm">
+                      <span class="block font-medium text-ink">{item.author}</span>
+                      <span class="block text-grey-600">{item.place}</span>
+                    </span>
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </ul>
+
+          <p class="mt-10 rounded-panel border border-brand-200 bg-brand-50 p-5 text-sm leading-relaxed text-grey-700">
+            <strong class="font-semibold text-brand-900">
+              Platzhalter, vor dem Aufschalten ersetzen.
+            </strong>{' '}
+            Diese Stimmen sind erfunden und dienen nur der Gestaltung. Erfundene
+            Bewertungen sind unzulässige Werbung. Ersetzen Sie sie durch echte,
+            freigegebene Rückmeldungen oder leeren Sie die Liste in
+            <code class="mx-1 rounded bg-white px-1.5 py-0.5 text-[0.8125rem]">
+              src/data/site.ts
+            </code>
+            , dann entfällt der ganze Abschnitt.
+          </p>
+        </div>
+      </Section>
+    )
+  }
+
+  <!-- ==================================================================
+       5. Über uns
+  =================================================================== -->
+  <Section tone="tint" labelledby="ueberuns-titel">
+    <span
+      aria-hidden="true"
+      class="pattern-bars fade-edges absolute inset-0 opacity-50"></span>
+
+    <div class="relative container-page">
+      <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <Reveal class="lg:col-span-6">
+          <div class="relative">
+            <div class="overflow-hidden rounded-hero bg-brand-100">
+              <Picture
+                name="beratung"
+                alt="Zwei Personen besprechen den Zaunverlauf anhand eines Plans auf dem Grundstück"
+                widths={[520, 780, 1100]}
+                sizes="(min-width: 1024px) 46vw, 92vw"
+                class="aspect-4/3 w-full object-cover"
+              />
+            </div>
+
+            <!-- Kleineres Bild versetzt darüber, bringt Tiefe in den Abschnitt -->
+            <div
+              class="absolute -right-3 -bottom-8 hidden w-44 overflow-hidden rounded-panel ring-8 ring-brand-50 sm:block"
+            >
+              <Picture
+                name="schweissen"
+                alt="Behandschuhte Hände schweissen einen Zaunrahmen in der Werkstatt"
+                widths={[240, 400]}
+                sizes="11rem"
+                class="aspect-square w-full object-cover"
+              />
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal class="lg:col-span-6" delay={90}>
+          <Eyebrow>Über uns</Eyebrow>
+          <h2 id="ueberuns-titel" class="mt-6 font-display text-h2">
+            Ein Betrieb, eine Ansprechperson.
+          </h2>
+          <p class="measure mt-6 text-lead text-grey-700">
+            {site.name} ist seit {site.foundedYear} in Rothrist zuhause, geführt von
+            {' '}{site.owner}. Beratung, Fertigung und Montage laufen über dieselbe
+            Hand. Das merkt man am Ergebnis und an der Termintreue.
+          </p>
+
+          <ul class="mt-9 grid gap-4 sm:grid-cols-2">
+            {
+              [
+                { icon: 'spark' as const, text: 'Eigene Werkstatt für Sonderteile' },
+                { icon: 'compass' as const, text: 'Beratung und Aufmass vor Ort' },
+                { icon: 'offer' as const, text: 'Offerte klar aufgeschlüsselt' },
+                { icon: 'guide' as const, text: 'Auf Wunsch Selbstmontage' },
+              ].map((item) => (
+                <li class="flex items-center gap-3 rounded-panel bg-white p-4 shadow-raise">
+                  <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-800">
+                    <Icon name={item.icon} size={18} />
+                  </span>
+                  <span class="text-[0.9375rem] text-grey-800">{item.text}</span>
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="mt-9">
+            <Button href="/ueber-uns/" variant="secondary" icon="arrow">
+              Mehr über den Betrieb
+            </Button>
+          </div>
+        </Reveal>
       </div>
     </div>
   </Section>
 
-  <!-- Über uns -->
-  <Section labelledby="ueberuns-titel" tone="white">
-    <div class="container-page grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-      <Reveal class="lg:col-span-5">
-        <div class="overflow-hidden rounded-panel bg-grey-200">
-          <Picture
-            name="werkstatt"
-            alt="Aufgeräumte Metallwerkstatt mit einer Rohrrahmentür auf dem Schweisstisch"
-            widths={[480, 720, 1000]}
-            sizes="(min-width: 1024px) 40vw, 92vw"
-            class="aspect-4/3 w-full object-cover"
-          />
-        </div>
-      </Reveal>
-
-      <Reveal class="lg:col-span-7">
-        <Eyebrow>Über uns</Eyebrow>
-        <h2 id="ueberuns-titel" class="mt-6 font-display text-h2">
-          Ein Betrieb, eine Ansprechperson.
+  <!-- ==================================================================
+       6. Kontakt
+       Die häufigen Fragen stehen bewusst direkt neben dem Formular. Sie
+       räumen die letzten Einwände aus, genau dort wo entschieden wird.
+  =================================================================== -->
+  <Section id="kontakt" tone="white" labelledby="kontakt-titel">
+    <div class="container-page">
+      <Reveal class="max-w-2xl">
+        <Eyebrow>Kontakt</Eyebrow>
+        <h2 id="kontakt-titel" class="mt-6 font-display text-h2">
+          Erzählen Sie uns von Ihrem Grundstück.
         </h2>
         <p class="measure mt-6 text-lead text-grey-700">
-          {site.name} ist seit {site.foundedYear} in Rothrist zuhause. Geführt von
-          {' '}{site.owner}, mit eigener Werkstatt an der {site.workshop.street}.
-          Was sich nicht ab Lager lösen lässt, entsteht dort auf Mass.
+          Ein kurzer Anruf genügt für die erste Einschätzung. Für alles Weitere
+          kommen wir vorbei, messen aus und schicken Ihnen eine klar
+          aufgeschlüsselte Offerte.
         </p>
-        <p class="measure mt-5 text-grey-700">
-          Wir arbeiten für Private, Gewerbe und Gemeinden in Rothrist und der
-          ganzen Region rundherum. Kurze Wege, verbindliche Termine und eine
-          Offerte, die am Ende auch stimmt.
-        </p>
-
-        <div class="mt-9">
-          <Button href="/ueber-uns/" variant="secondary" icon="arrow">
-            Mehr über den Betrieb
-          </Button>
-        </div>
       </Reveal>
+
+      <div class="mt-14 grid gap-8 lg:grid-cols-12">
+        <Reveal class="lg:col-span-7">
+          <div class="card border border-grey-200 p-8 sm:p-10">
+            <ContactForm />
+          </div>
+        </Reveal>
+
+        <Reveal class="lg:col-span-5" delay={90}>
+          <div class="rounded-panel bg-brand-950 p-8 text-white sm:p-10">
+            <h3 class="font-display text-h3">Direkt erreichbar</h3>
+
+            <div class="mt-6 space-y-3">
+              <a
+                href={site.phone.href}
+                class="flex items-center gap-4 rounded-xl bg-white/8 px-5 py-4 transition-colors duration-200 hover:bg-white/14"
+              >
+                <Icon name="phone" size={22} class="shrink-0 text-brand-300" />
+                <span>
+                  <span class="block text-sm text-brand-200">Telefon</span>
+                  <span class="block font-display text-lg font-semibold">
+                    {site.phone.display}
+                  </span>
+                </span>
+              </a>
+
+              <a
+                href={`mailto:${site.email}`}
+                class="flex items-center gap-4 rounded-xl bg-white/8 px-5 py-4 transition-colors duration-200 hover:bg-white/14"
+              >
+                <Icon name="mail" size={22} class="shrink-0 text-brand-300" />
+                <span class="min-w-0">
+                  <span class="block text-sm text-brand-200">Mail</span>
+                  <span class="block truncate font-medium">{site.email}</span>
+                </span>
+              </a>
+            </div>
+
+            <h3 class="mt-9 font-display text-h3">Standorte</h3>
+            <div class="mt-5 space-y-5">
+              {
+                [site.office, site.workshop].map((place) => (
+                  <address class="flex gap-3.5 not-italic">
+                    <Icon name="pin" size={20} class="mt-0.5 shrink-0 text-brand-300" />
+                    <div class="text-[0.9375rem]">
+                      <p class="font-medium">{place.label}</p>
+                      <p class="text-brand-200">{place.street}</p>
+                      <p class="text-brand-200">
+                        {place.postalCode} {place.city}
+                      </p>
+                    </div>
+                  </address>
+                ))
+              }
+            </div>
+
+            <h3 class="mt-9 font-display text-h3">Einzugsgebiet</h3>
+            <p class="mt-4 text-[0.9375rem] leading-relaxed text-brand-200">
+              {areaServed.join(', ')} und Umgebung.
+            </p>
+          </div>
+        </Reveal>
+      </div>
+
+      <div class="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <Reveal class="lg:col-span-4">
+          <h2 class="font-display text-h2">Gut zu wissen.</h2>
+          <p class="measure mt-5 text-grey-700">
+            Ihre Frage ist nicht dabei? Rufen Sie an, wir beantworten sie direkt.
+          </p>
+        </Reveal>
+        <Reveal class="lg:col-span-8">
+          <Accordion items={faq} />
+        </Reveal>
+      </div>
     </div>
   </Section>
-
-  <!-- Fragen -->
-  <Section labelledby="faq-titel">
-    <div class="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
-      <Reveal class="lg:col-span-4">
-        <Eyebrow>Fragen</Eyebrow>
-        <h2 id="faq-titel" class="mt-6 font-display text-h2">Gut zu wissen.</h2>
-        <p class="measure mt-6 text-grey-700">
-          Ihre Frage ist nicht dabei? Rufen Sie an, wir beantworten sie direkt.
-        </p>
-      </Reveal>
-
-      <Reveal class="lg:col-span-8">
-        <Accordion items={faq} />
-      </Reveal>
-    </div>
-  </Section>
-
-  <CtaBand />
 </BaseLayout>

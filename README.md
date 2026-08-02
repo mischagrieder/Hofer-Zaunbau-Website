@@ -57,6 +57,12 @@ erfunden wurden:
   ein Hinweiskasten, der nach dem Ergänzen entfernt werden kann.
 - **Datenschutz**: Der Text beschreibt den heutigen Stand ohne Analysedienste.
   Kommt später ein Werkzeug dazu, muss der Abschnitt angepasst werden.
+- **Kundenstimmen**: Der Abschnitt auf der Startseite enthält drei
+  **erfundene** Platzhalter. Erfundene Bewertungen sind unzulässige Werbung und
+  dürfen so nicht online gehen. Entweder durch echte, freigegebene Stimmen
+  ersetzen oder `testimonials` in `src/data/site.ts` auf eine leere Liste
+  setzen, dann entfällt der Abschnitt automatisch. Auf der Seite steht dazu ein
+  sichtbarer Hinweiskasten.
 
 ## Bildmaterial
 
@@ -125,6 +131,12 @@ Die Farben, Schriftgrössen, Abstände und Rundungen sind als Tokens im Block
   bleibt. Der Kopfbereich liegt transparent darüber und wird beim Scrollen fest.
 - **Silbentrennung**: global abgeschaltet (hyphens: none). Wörter brechen nur an
   Wortgrenzen, nie mitten im Wort.
+- **Flächen**: Die Abschnitte wechseln bewusst zwischen Weiss, hellem Blau und
+  zwei dunklen Blautönen ab, damit die Seite nicht als eine durchgehende weisse
+  Fläche wirkt. Die Tonwerte liefert `tone` in `components/Section.astro`.
+- **Formen**: Raster, senkrechte Striche und ein weicher Lichtschein ziehen eine
+  ruhige Bauzeichnungsanmutung durch die Seite. Alle als Verlauf umgesetzt, also
+  ohne zusätzliche Datei und ohne Abruf. Siehe `.pattern-*` und `.glow-*`.
 - **Bewegung**: Einblendungen beim Scrollen und Übergänge zwischen Seiten. Alles
   ist an `prefers-reduced-motion` gebunden und entfällt vollständig, wenn
   reduzierte Bewegung eingestellt ist.
@@ -136,6 +148,19 @@ mobile Menü mit Fokusfang und Escape, die Grossansicht der Galerie über das
 native `dialog`-Element, Fragen und Antworten über `details` und `summary` ohne
 JavaScript. Das Formular meldet Fehler über `aria-invalid`, verknüpfte
 Fehlertexte und eine Live-Region.
+
+## Aufbau der Startseite
+
+1. Aufmacher
+2. Leistungen
+3. Ergebnisse, abgeschlossene Ausführungen
+4. Kundenstimmen, blendet sich bei leerer Liste selbst aus
+5. Über uns
+6. Kontakt, Formular und häufige Fragen
+7. Fussbereich
+
+Die häufigen Fragen stehen bewusst im Abschnitt Kontakt. Sie räumen die letzten
+Einwände genau dort aus, wo über eine Anfrage entschieden wird.
 
 ## Formular
 
