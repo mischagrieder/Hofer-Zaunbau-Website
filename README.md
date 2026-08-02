@@ -71,6 +71,9 @@ erfunden wurden:
   ein Hinweiskasten, der nach dem Ergänzen entfernt werden kann.
 - **Datenschutz**: Der Text beschreibt den heutigen Stand ohne Analysedienste.
   Kommt später ein Werkzeug dazu, muss der Abschnitt angepasst werden.
+- **Bewertung im Aufmacher**: `heroReview` in `src/data/site.ts` ist erfunden.
+  Durch eine echte, freigegebene Rückmeldung ersetzen oder auf `null` setzen,
+  dann zeigt der Aufmacher wieder den Sachhinweis zur Beratung vor Ort.
 - **Kundenstimmen**: Der Abschnitt auf der Startseite enthält drei
   **erfundene** Platzhalter. Erfundene Bewertungen sind unzulässige Werbung und
   dürfen so nicht online gehen. Entweder durch echte, freigegebene Stimmen
@@ -151,6 +154,11 @@ Die Farben, Schriftgrössen, Abstände und Rundungen sind als Tokens im Block
 - **Formen**: Raster, senkrechte Striche und ein weicher Lichtschein ziehen eine
   ruhige Bauzeichnungsanmutung durch die Seite. Alle als Verlauf umgesetzt, also
   ohne zusätzliche Datei und ohne Abruf. Siehe `.pattern-*` und `.glow-*`.
+- **Handy**: Unter 768 Pixel fallen Muster, eingefärbte Abschnitte und
+  Kartenflächen weg. Der Inhalt steht direkt auf Weiss und wird nur durch feine
+  Linien getrennt. Auf dem schmalen Bildschirm wirkt sonst jede Fläche wie ein
+  Rahmen um den Text. Die Regeln stehen gebündelt in der Media Query in
+  `global.css`.
 - **Bewegung**: Einblendungen beim Scrollen und Übergänge zwischen Seiten. Alles
   ist an `prefers-reduced-motion` gebunden und entfällt vollständig, wenn
   reduzierte Bewegung eingestellt ist.

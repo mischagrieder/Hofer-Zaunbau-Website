@@ -106,7 +106,7 @@
   --text-body--line-height: 1.7;
 
   /* Rhythmus */
-  --spacing-section: clamp(5rem, 3rem + 8vw, 9rem);
+  --spacing-section: clamp(3.25rem, 1.75rem + 6vw, 7.5rem);
   --spacing-gutter: clamp(1.25rem, 0.5rem + 2.5vw, 2.5rem);
 
   --radius-card: 1rem;
@@ -363,6 +363,53 @@
     color: var(--color-brand-600);
   }
 
+}
+
+/* ---------------------------------------------------------------------------
+   Ruhige Darstellung auf schmalen Geräten
+
+   Auf dem Handy ist der Platz knapp. Dort wirkt jede zusätzliche Fläche wie ein
+   Rahmen um den Text und die Seite zerfällt in lauter Kästchen. Deshalb fallen
+   unter 768 Pixel die Muster, die eingefärbten Abschnitte und die Kartenflächen
+   weg. Der Inhalt steht direkt auf Weiss und wird nur durch feine Linien
+   getrennt. Ab Tablet greift wieder die volle Gestaltung.
+
+   Bewusst ausserhalb jeder @layer, damit die Regeln gegen die Utilities
+   gewinnen, die die Flächen setzen.
+--------------------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  /* Dekorflächen verschwinden vollständig. */
+  .pattern-grid,
+  .pattern-bars,
+  .glow-brand {
+    display: none;
+  }
+
+  /* Eingefärbte helle Abschnitte werden weiss. */
+  .section-tint {
+    background-color: white;
+  }
+
+  body {
+    background-color: white;
+  }
+
+  /* Karten verlieren Fläche, Rahmen und Schatten und werden zu Textblöcken. */
+  .card,
+  .card-flat-mobile {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding-inline: 0;
+  }
+
+  /* Listen aus Karten bekommen statt Abständen feine Trennlinien. */
+  .stack-mobile > * + * {
+    border-top: 1px solid var(--color-grey-200);
+    padding-top: 1.75rem;
+  }
 }
 
 /* ---------------------------------------------------------------------------

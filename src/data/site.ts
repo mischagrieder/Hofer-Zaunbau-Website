@@ -500,3 +500,27 @@ export const testimonials: readonly Testimonial[] = [
     place: 'Bitte ersetzen',
   },
 ];
+
+/**
+ * TODO(verify): PLATZHALTER, erfunden.
+ *
+ * Bewertung für die Karte im Aufmacher. Wie bei `testimonials` gilt: erfundene
+ * Bewertungen sind irreführende Werbung und dürfen nicht online gehen. Vor dem
+ * Aufschalten durch eine echte, freigegebene Rückmeldung ersetzen oder das
+ * Feld auf null setzen, dann zeigt der Aufmacher wieder den Sachhinweis.
+ *
+ * Bewusst nicht als Bewertung einer bestimmten Plattform ausgewiesen. Eine
+ * erfundene Bewertung unter fremdem Markenzeichen wäre zusätzlich eine
+ * Anmassung dieser Plattform.
+ */
+export const heroReview: {
+  readonly rating: number;
+  readonly quote: string;
+  readonly author: string;
+  readonly place: string;
+} | null = {
+  rating: 5,
+  quote: 'Sauber gearbeitet, Termin eingehalten und die Offerte hat gestimmt.',
+  author: 'Andrea Meier',
+  place: 'Zofingen',
+};

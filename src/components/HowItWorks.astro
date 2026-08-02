@@ -1,0 +1,108 @@
+---
+import Icon from './Icon.astro';
+import Reveal from './Reveal.astro';
+import { steps } from '../data/site';
+
+/**
+ * Ablauf der Zusammenarbeit.
+ *
+ * Aufbau nach der übergebenen Vorlage: nummerierte Karten mit Pinnadel, auf
+ * breiten Bildschirmen versetzt und leicht gekippt, verbunden durch eine
+ * gestrichelte Linie, die langsam durchläuft.
+ *
+ * Die Vorlage war React mit motion. Dieses Projekt ist Astro und liefert im
+ * Normalfall kein JavaScript aus. Deshalb ist derselbe Aufbau hier ohne
+ * Bibliothek umgesetzt: die Linie ist ein SVG, ihre Bewegung eine
+ * CSS-Animation auf stroke-dashoffset. Das spart rund 45 KB an React und
+ * motion, läuft auf dem Compositor und hält die Seite bei 0 KB JavaScript.
+ *
+ * Auf schmalen Geräten entfallen Versatz, Drehung und Linie. Dort stehen die
+ * Schritte schlicht untereinander, passend zur ruhigen Handydarstellung.
+ *
+ * Hinweis zu den Klassen weiter unten: Der Versatz steht als vollständiger
+ * Klassenname da und wird nicht aus Teilen zusammengesetzt. Tailwind liest den
+ * Quelltext und findet zusammengebaute Namen nicht.
+ */
+---
+
+<div class="relative">
+  <!-- Verbindungslinie, nur ab grossem Bildschirm -->
+  <svg
+    class="pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
+    viewBox="0 0 1000 420"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    <path
+      class="ablauf-linie"
+      d="M 130 120 C 330 120, 300 300, 490 300 C 680 300, 640 120, 860 120"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-dasharray="8 7"
+      stroke-linecap="round"
+      vector-effect="non-scaling-stroke"
+    ></path>
+  </svg>
+
+  <ol
+    class="stack-mobile relative grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5"
+  >
+    {
+      steps.map((step, index) => (
+        <Reveal
+          as="li"
+          delay={index * 90}
+          class={index % 2 === 0 ? 'lg:mt-0' : 'lg:mt-24'}
+        >
+          <article
+            class:list={[
+              'card card-hover h-full p-7 text-center',
+              // Leichte Drehung im Wechsel, wie in der Vorlage. Erst ab
+              // grossem Bildschirm, damit auf dem Handy nichts schief steht.
+              index % 2 === 0 ? 'lg:rotate-[-1.5deg]' : 'lg:rotate-[1.5deg]',
+            ]}
+          >
+            <span
+              class="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-brand-800 text-white"
+            >
+              <Icon name="pin" size={20} />
+            </span>
+
+            <span
+              aria-hidden="true"
+              class="mt-5 block font-display text-4xl font-bold text-brand-200"
+            >
+              {String(index + 1).padStart(2, '0')}
+            </span>
+
+            <h3 class="mt-3 font-display text-h3">{step.title}</h3>
+            <p class="mt-2.5 text-[0.9375rem] leading-relaxed text-grey-700">
+              {step.text}
+            </p>
+          </article>
+        </Reveal>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .ablauf-linie {
+    color: var(--color-brand-300);
+  }
+
+  /* Die Linie läuft langsam durch. Der Versatz ist ein Vielfaches der
+     Strichlänge von 15, dadurch schliesst der Kreis ohne Sprung. */
+  @media (prefers-reduced-motion: no-preference) {
+    .ablauf-linie {
+      animation: ablauf-lauf 3s linear infinite;
+    }
+  }
+
+  @keyframes ablauf-lauf {
+    to {
+      stroke-dashoffset: -150;
+    }
+  }
+</style>

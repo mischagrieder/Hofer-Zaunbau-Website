@@ -14,6 +14,8 @@ interface Props {
   noindex?: boolean;
   /** Legt den Kopfbereich transparent über ein Aufmacherbild. */
   heroOverlay?: boolean;
+  /** Aus, wenn die Seite mit einer dunklen Fläche endet. */
+  footerFade?: boolean;
 }
 
 const {
@@ -22,6 +24,7 @@ const {
   bareTitle = false,
   noindex = false,
   heroOverlay = false,
+  footerFade = true,
 } = Astro.props;
 
 const pageTitle = bareTitle ? title : `${title} | ${site.name}`;
@@ -145,7 +148,7 @@ const jsonLd = {
       <slot />
     </main>
 
-    <Footer />
+    <Footer fadeTop={footerFade} />
 
     <script>
       /**

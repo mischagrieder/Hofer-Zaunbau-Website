@@ -2,12 +2,44 @@
 import { nav, products, site } from '../data/site';
 import Icon from './Icon.astro';
 import Logo from './Logo.astro';
+import Picture from './Picture.astro';
+
+/**
+ * fadeTop blendet die Oberkante des Hintergrundbildes in eine helle Fläche
+ * aus. Das passt nur, wenn darüber tatsächlich eine helle Fläche liegt. Auf
+ * Seiten, die mit dem dunklen Handlungsband enden, wird es abgeschaltet, sonst
+ * entstünde dort ein heller Schleier über der dunklen Fläche.
+ */
+interface Props {
+  fadeTop?: boolean;
+}
+const { fadeTop = true } = Astro.props;
 
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-brand-900 text-grey-300">
-  <div class="container-page py-(--spacing-section)">
+<footer class="relative overflow-hidden bg-brand-950 text-grey-300">
+  <!-- Projektbild als Hintergrund. Es liegt gedämpft hinter dem Inhalt und
+       geht oben weich in die helle Seitenfläche über, wie beim Aufmacher. Der
+       durchgehende dunkle Verlauf darüber sichert den Textkontrast unabhängig
+       vom Motiv. -->
+  <div aria-hidden="true" class="absolute inset-0">
+    <Picture
+      name="gefaelle"
+      alt=""
+      widths={[640, 1024, 1440]}
+      sizes="100vw"
+      class="h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 bg-brand-950/82"></div>
+    {
+      fadeTop && (
+        <div class="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-white to-transparent" />
+      )
+    }
+  </div>
+
+  <div class="relative container-page py-(--spacing-section)">
     <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
       <div class="lg:col-span-4">
         <Logo class="text-white" />
