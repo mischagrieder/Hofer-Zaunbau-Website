@@ -412,6 +412,21 @@
   }
 }
 
+/* Während der Eingangssequenz bleibt der Kopfbereich draussen. Über dem
+   weissen Zaun wirkte die dunkle Leiste sonst wie ein Fremdkörper. Sobald der
+   Zaun durchschritten ist, fährt sie ein. */
+html[data-intro]:not([data-intro-fertig]) #site-header {
+  opacity: 0;
+  transform: translateY(-0.75rem);
+  pointer-events: none;
+}
+
+#site-header {
+  transition:
+    opacity 0.4s var(--ease-out-expo),
+    transform 0.4s var(--ease-out-expo);
+}
+
 /* ---------------------------------------------------------------------------
    Kopfbereich über dem Aufmacherbild
 

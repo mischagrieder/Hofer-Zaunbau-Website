@@ -157,7 +157,14 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
       sentinel.setAttribute('aria-hidden', 'true');
       sentinel.style.cssText =
         'position:absolute;top:0;left:0;height:72px;width:1px;pointer-events:none;';
-      document.body.prepend(sentinel);
+
+      /* Gibt es einen Anker, hängt der Sensor an dessen Oberkante statt am
+         Dokumentanfang. Nötig, sobald vor dem Aufmacher noch etwas steht, etwa
+         die Eingangssequenz: sonst gälte der Kopfbereich dort längst als
+         gescrollt und wäre über dem Bild hell statt transparent. */
+      const anchor = document.querySelector<HTMLElement>('[data-header-anchor]');
+      if (anchor) anchor.prepend(sentinel);
+      else document.body.prepend(sentinel);
 
       new IntersectionObserver(([entry]) => {
         if (entry.isIntersecting) header.removeAttribute('data-scrolled');
