@@ -16,8 +16,6 @@ interface Props {
   heroOverlay?: boolean;
   /** Aus, wenn die Seite mit einer dunklen Fläche endet. */
   footerFade?: boolean;
-  /** Die Seite beginnt mit der Eingangssequenz. */
-  intro?: boolean;
 }
 
 const {
@@ -27,7 +25,6 @@ const {
   noindex = false,
   heroOverlay = false,
   footerFade = true,
-  intro = false,
 } = Astro.props;
 
 const pageTitle = bareTitle ? title : `${title} | ${site.name}`;
@@ -133,22 +130,6 @@ const jsonLd = {
       is:inline
       set:html={JSON.stringify(jsonLd)}
     />
-
-    {
-      /* Muss vor dem ersten Malen laufen. Wird die Sequenz erst danach
-         eingeschaltet, schiebt sie nachträglich 170 Bildschirmhöhen ein und
-         verschiebt die ganze Seite. Das kostete gemessen einen Layoutshift
-         von 1.0 und riss die Leistungsbewertung von 100 auf 75. */
-      /* set:html statt eines Ausdrucks im Element: der Inhalt eines script
-         steht als Rohtext, ein {`...`} landete dort wörtlich im Dokument und
-         war damit ein Syntaxfehler, das Skript lief nie. */
-      intro && (
-        <script
-          is:inline
-          set:html="if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.setAttribute('data-intro','')"
-        />
-      )
-    }
 
     <ClientRouter />
   </head>

@@ -154,12 +154,6 @@ Die Farben, Schriftgrössen, Abstände und Rundungen sind als Tokens im Block
 - **Formen**: Raster, senkrechte Striche und ein weicher Lichtschein ziehen eine
   ruhige Bauzeichnungsanmutung durch die Seite. Alle als Verlauf umgesetzt, also
   ohne zusätzliche Datei und ohne Abruf. Siehe `.pattern-*` und `.glow-*`.
-- **Eingangssequenz**: Die Startseite beginnt mit einem Blick durch ein Loch im
-  Maschendrahtzaun. Beim Scrollen wächst der Zaun vom Lochmittelpunkt aus über
-  den Bildschirm hinaus. Der Zaun ist ein erzeugtes SVG, bewegt werden nur
-  `transform` und `opacity`. Sie läuft nur mit JavaScript und nur ohne
-  reduzierte Bewegung. Fehlt eines von beidem, beginnt die Seite direkt mit dem
-  Aufmacher. Siehe `components/IntroFence.astro`.
 - **Handy**: Unter 768 Pixel fallen Muster, eingefärbte Abschnitte und
   Kartenflächen weg. Der Inhalt steht direkt auf Weiss und wird nur durch feine
   Linien getrennt. Auf dem schmalen Bildschirm wirkt sonst jede Fläche wie ein
