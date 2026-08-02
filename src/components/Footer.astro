@@ -44,7 +44,7 @@ const year = new Date().getFullYear();
               <li>
                 <a
                   href={item.href}
-                  class="link-underline transition-colors duration-200 hover:text-white"
+                  class="link-underline inline-block py-1 transition-colors duration-200 hover:text-white"
                 >
                   {item.label}
                 </a>
@@ -64,7 +64,7 @@ const year = new Date().getFullYear();
               <li>
                 <a
                   href={`/produkte/#${product.slug}`}
-                  class="link-underline transition-colors duration-200 hover:text-white"
+                  class="link-underline inline-block py-1 transition-colors duration-200 hover:text-white"
                 >
                   {product.title}
                 </a>
@@ -103,10 +103,10 @@ const year = new Date().getFullYear();
       <p>&copy; {year} {site.name}</p>
       <ul class="flex flex-wrap gap-x-6 gap-y-2">
         <li>
-          <a href="/impressum/" class="link-underline hover:text-white">Impressum</a>
+          <a href="/impressum/" class="link-underline inline-block py-1 hover:text-white">Impressum</a>
         </li>
         <li>
-          <a href="/datenschutz/" class="link-underline hover:text-white">Datenschutz</a>
+          <a href="/datenschutz/" class="link-underline inline-block py-1 hover:text-white">Datenschutz</a>
         </li>
       </ul>
     </div>

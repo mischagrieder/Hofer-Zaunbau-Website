@@ -74,6 +74,7 @@ const anliegen = [
         name="telefon"
         type="tel"
         autocomplete="tel"
+        inputmode="tel"
         class={`mt-2 ${fieldBase}`}
       />
     </div>
@@ -86,6 +87,8 @@ const anliegen = [
         type="email"
         required
         autocomplete="email"
+        inputmode="email"
+        spellcheck="false"
         class={`mt-2 ${fieldBase}`}
         aria-describedby="mail-fehler"
       />

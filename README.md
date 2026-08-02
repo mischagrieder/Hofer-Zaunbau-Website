@@ -20,6 +20,7 @@ npm run dev        # Entwicklungsserver auf http://localhost:4321
 | `npm run check` | Typprüfung über alle Astro-Dateien |
 | `npm run images` | Holt die Bildmotive nach `src/assets/images` |
 | `npm run audit` | Prüft alle Seiten mit axe-core und misst mit Lighthouse |
+| `npm run inspect` | Prüft Überschriftenfolge, Überlauf, Trefferflächen, Fokus |
 
 ### Prüflauf
 
@@ -27,8 +28,21 @@ npm run dev        # Entwicklungsserver auf http://localhost:4321
 System vorhandene Chromium, es wird nichts nachgeladen. Der Lauf prüft jede
 Seite gegen WCAG 2.1 A und AA und misst die Startseite mit Lighthouse.
 
-Letzter Stand: **keine Verstösse** auf allen neun Seiten, Lighthouse
-**100 / 100 / 100 / 100** bei 0 ms Blockierzeit und 0 Layoutverschiebung.
+`npm run inspect` ergänzt das um Prüfungen, die beide Werkzeuge nicht abdecken:
+Überschriftenfolge, doppelte Kennungen, waagrechter Überlauf über sieben Breiten
+von 320 bis 1920 Pixel, Trefferflächen auf dem Handy und ob jedes Bedienelement
+beim Durchtabben einen sichtbaren Fokus bekommt.
+
+Zwei Prüfungen sind bewusst so gebaut, dass sie keine Fehlalarme erzeugen: der
+Fokus wird über echte Tabulatorschritte geprüft, weil ein `focus()` aus dem
+Skript `:focus-visible` nicht auslöst. Und bei den Trefferflächen sind die
+beiden Fälle ausgenommen, die die Richtlinie zulässt, nämlich Verweise im
+Fliesstext und nur für Screenreader sichtbare Elemente.
+
+Letzter Stand: **keine Verstösse** bei axe-core auf allen neun Seiten,
+**keine Befunde** bei der Strukturprüfung, Lighthouse **100 / 100 / 100** für
+Leistung, Barrierefreiheit und SEO bei 0 ms Blockierzeit und 0
+Layoutverschiebung.
 
 ## Inhalte pflegen
 

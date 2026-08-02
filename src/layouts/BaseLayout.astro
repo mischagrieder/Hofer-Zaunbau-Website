@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import { areaServed, site } from '../data/site';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import remoteImages from '../data/remote-images.json';
 import '../styles/global.css';
 
 interface Props {
@@ -26,6 +27,21 @@ const {
 const pageTitle = bareTitle ? title : `${title} | ${site.name}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const ogImage = new URL('/images/og.jpg', site.url).href;
+
+/**
+ * Solange Motive von der Bildquelle statt aus dem eigenen Verzeichnis kommen,
+ * wird die Verbindung dorthin vorab aufgebaut. Das spart beim ersten Bild den
+ * Aufbau von DNS, TCP und TLS und wirkt sich direkt auf den grössten
+ * sichtbaren Inhalt aus. Liegen alle Dateien lokal vor, ist die Liste leer und
+ * es wird nichts ausgegeben.
+ */
+const remoteOrigins = [
+  ...new Set(
+    Object.values(remoteImages as Record<string, { url: string }>).map(
+      (entry) => new URL(entry.url).origin,
+    ),
+  ),
+];
 
 /**
  * Strukturierte Daten für die lokale Suche. Öffnungszeiten fehlen bewusst:
@@ -74,6 +90,12 @@ const jsonLd = {
 
     <meta name="theme-color" content="#f7f9fc" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {
+      remoteOrigins.map((origin) => (
+        <link rel="preconnect" href={origin} crossorigin />
+      ))
+    }
 
     <!-- Beide Schriften werden im ersten Viewport gebraucht und deshalb vorgeladen. -->
     <link

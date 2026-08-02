@@ -87,7 +87,7 @@
   --text-display--line-height: 0.98;
   --text-display--letter-spacing: -0.035em;
 
-  --text-h1: clamp(2.25rem, 1.3rem + 3.8vw, 4rem);
+  --text-h1: clamp(2rem, 1.1rem + 3.9vw, 4rem);
   --text-h1--line-height: 1.03;
   --text-h1--letter-spacing: -0.032em;
 

@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "images": "node scripts/prepare-images.mjs",
-    "audit": "node scripts/audit.mjs"
+    "audit": "node scripts/audit.mjs",
+    "inspect": "node scripts/inspect.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
